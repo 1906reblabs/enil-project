@@ -1,19 +1,25 @@
 name: "ENIL — Weekly Orchestration"
 
+# ─────────────────────────────────────────────────────────────────────────────
+# SINGLE-REPO VERSION
+# Runs every Monday 06:00 SAST. Produces the weekly intelligence report,
+# content queue, revenue pipeline review, and moat assessment.
+# Report is committed to obsidian/04-Weekly-Logs/ and weekly_reports/.
+# ─────────────────────────────────────────────────────────────────────────────
+
 on:
-  # Every Monday 04:00 UTC = 06:00 SAST
   schedule:
+    # Every Monday 04:00 UTC = 06:00 SAST
     - cron: "0 4 * * 1"
 
-  # Manual trigger with options
   workflow_dispatch:
     inputs:
       phase:
-        description: "Run single phase only (1–5, or leave blank for all)"
+        description: "Single phase only (1–5, blank = all)"
         required: false
         default: ""
       skip_pipeline:
-        description: "Skip data pipeline refresh? (true/false)"
+        description: "Skip pipeline refresh? (true/false)"
         required: false
         default: "false"
       dry_run:
@@ -32,12 +38,10 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout enil-data
+      - name: Checkout repo
         uses: actions/checkout@v4
         with:
-          repository: ENIL-ZA/enil-data
-          token: ${{ secrets.ENIL_DATA_TOKEN }}
-          path: enil-data
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -46,7 +50,7 @@ jobs:
           cache: pip
 
       - name: Install dependencies
-        run: pip install -r enil-data/requirements.txt
+        run: pip install -r requirements.txt
 
       - name: Install system deps
         run: |
@@ -58,7 +62,6 @@ jobs:
 
       - name: Run weekly orchestrator
         id: orchestrate
-        working-directory: enil-data
         env:
           GITHUB_ACTIONS: "true"
         run: |
@@ -75,17 +78,17 @@ jobs:
 
       - name: Check for report changes
         id: diff
-        working-directory: enil-data
-        run: git diff --quiet weekly_reports/ obsidian/ revenue_pipeline.json || echo "CHANGED=true" >> "$GITHUB_OUTPUT"
+        run: |
+          git diff --quiet weekly_reports/ obsidian/ revenue_pipeline.json 2>/dev/null \
+            || echo "CHANGED=true" >> "$GITHUB_OUTPUT"
 
       - name: Commit weekly report
         if: steps.diff.outputs.CHANGED == 'true' && github.event.inputs.dry_run != 'true'
-        working-directory: enil-data
         run: |
           git config user.name  "ENIL Orchestration Bot"
           git config user.email "orchestration@enil.co.za"
-          git add weekly_reports/ obsidian/ revenue_pipeline.json logs/
-          git commit -m "📊 Weekly report $(date +%Y-%m-%d) — orchestration run ${{ github.run_id }}"
+          git add weekly_reports/ obsidian/ revenue_pipeline.json logs/ 2>/dev/null || true
+          git commit -m "📊 Weekly report $(date +%Y-%m-%d) — run ${{ github.run_id }}"
           git push
 
       - name: Upload orchestration log
@@ -93,18 +96,19 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: weekly-orchestration-log-${{ github.run_id }}
-          path: enil-data/logs/weekly_orchestrator.log
+          path: logs/weekly_orchestrator.log
           retention-days: 90
 
-      - name: Summarise in GitHub Actions summary
+      - name: Write step summary
         if: always()
-        working-directory: enil-data
         run: |
           REPORT=$(ls weekly_reports/*.json 2>/dev/null | sort | tail -1)
+          echo "## ENIL Weekly Orchestration" >> $GITHUB_STEP_SUMMARY
           if [ -n "$REPORT" ]; then
-            echo "## ENIL Weekly Orchestration Summary" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
             echo "**Week:** $(python3 -c "import json; d=json.load(open('$REPORT')); print(d.get('week',''))")" >> $GITHUB_STEP_SUMMARY
-            echo "**Opportunities found:** $(python3 -c "import json; d=json.load(open('$REPORT')); print(len(d.get('intelligence',{}).get('opportunities',[])))")" >> $GITHUB_STEP_SUMMARY
+            echo "**Opportunities:** $(python3 -c "import json; d=json.load(open('$REPORT')); print(len(d.get('intelligence',{}).get('opportunities',[])))")" >> $GITHUB_STEP_SUMMARY
             echo "**Next run:** $(python3 -c "import json; d=json.load(open('$REPORT')); print(d.get('next_run',''))")" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "_Report file not found — check logs_" >> $GITHUB_STEP_SUMMARY
           fi
+          
