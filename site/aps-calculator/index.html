@@ -1,1 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APS Calculator 2025 — SA Universities | ENIL Navigation Intelligence</title>
+<meta name="description" content="Calculate your APS score instantly. Check admission requirements across all 26 South African universities. Free — no registration. Includes NSFAS eligibility and Ekurhuleni labour demand signals.">
+<meta name="keywords" content="APS calculator 2025, APS score South Africa, university admission points, matric APS requirements">
+<link rel="canonical" href="https://enil.co.za/aps-calculator/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How is APS calculated in South Africa?","acceptedAnswer":{"@type":"Answer","text":"Your APS (Admission Point Score) is the sum of your best 6 subject results, excluding Life Orientation. Level 7 (80%+) = 7 points, Level 6 (70–79%) = 6 points, down to Level 1 (0–29%) = 1 point. Life Orientation adds 1 point at some universities when achieved at Level 4+."}},{"@type":"Question","name":"What APS do I need for engineering in South Africa?","acceptedAnswer":{"@type":"Answer","text":"Engineering APS requirements vary: Wits BEng requires APS 35+, UP Engineering requires 32+, UJ Engineering Technology requires 26+, TUT National Diploma requires 20+. Pure Mathematics (not Mathematical Literacy) is required for all engineering programmes."}},{"@type":"Question","name":"Can I study engineering with Mathematical Literacy?","acceptedAnswer":{"@type":"Answer","text":"No. Mathematical Literacy permanently excludes you from all university engineering programmes AND all NATED N1-N3 engineering artisan pathways at TVET colleges. This is the most common credential trap in South African education."}}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0a0a08;--paper:#f2f0e8;--surface:#e8e5dc;--card:#fff;
+  --accent:#c8391a;--gold:#b8890f;--green:#1a6b32;--blue:#1a3f7a;
+  --muted:#7a7868;--border:#d0cdc0;
+  --mono:'IBM Plex Mono',monospace;--sans:'Syne',system-ui,sans-serif
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.6}
 
+/* ─ Nav ─ */
+nav{
+  background:var(--ink);border-bottom:2px solid var(--accent);
+  padding:.9rem 1.5rem;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:50
+}
+.logo{font-family:var(--mono);font-weight:600;font-size:.95rem;letter-spacing:.2em;color:#fff}
+.logo em{color:var(--accent);font-style:normal}
+nav a{color:#888;text-decoration:none;font-family:var(--mono);font-size:.7rem;margin-left:1.25rem}
+nav a:hover{color:#fff}
+
+/* ─ Banner ─ */
+.banner{
+  background:var(--accent);color:#fff;text-align:center;
+  padding:.6rem 1rem;font-family:var(--mono);font-size:.72rem;font-weight:600;letter-spacing:.04em
+}
+
+/* ─ Hero ─ */
+.hero{
+  background:var(--ink);color:#fff;padding:2.5rem 1.5rem 2rem;text-align:center;
+  border-bottom:3px solid var(--accent)
+}
+.hero h1{
+  font-family:var(--sans);font-size:clamp(1.6rem,4vw,2.5rem);
+  font-weight:800;line-height:1.1
+}
+.hero h1 em{color:var(--accent);font-style:normal}
+.hero p{color:#999;max-width:520px;margin:.75rem auto 0;font-size:.88rem;line-height:1.8}
+
+/* ─ Container ─ */
+.container{max-width:860px;margin:0 auto;padding:0 1.25rem}
+
+/* ─ Calculator card ─ */
+.calc{
+  background:var(--card);border:1px solid var(--border);border-radius:10px;
+  padding:1.75rem;margin:2rem auto;box-shadow:0 2px 16px rgba(0,0,0,.06)
+}
+.calc h2{font-family:var(--mono);font-size:.82rem;font-weight:600;letter-spacing:.06em;margin-bottom:1.25rem;padding-bottom:.75rem;border-bottom:2px solid var(--ink)}
+
+/* ─ Subject grid ─ */
+.subjects{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:.75rem;margin-bottom:1.25rem}
+.subj-row{
+  display:flex;align-items:center;gap:.6rem;
+  padding:.7rem .9rem;border:1px solid var(--border);border-radius:7px;
+  background:var(--surface);transition:border-color .15s
+}
+.subj-row:focus-within{border-color:var(--ink)}
+.subj-row label{flex:1;font-size:.8rem;font-weight:600;min-width:120px}
+.subj-row select{
+  padding:.3rem .5rem;border:1px solid var(--border);border-radius:5px;
+  font-family:inherit;font-size:.78rem;background:#fff;cursor:pointer
+}
+.lvl-badge{
+  width:30px;height:30px;border-radius:5px;display:flex;align-items:center;
+  justify-content:center;font-family:var(--mono);font-size:.82rem;font-weight:600;
+  background:var(--surface);color:var(--muted);flex-shrink:0;transition:all .2s
+}
+.lv7,.lv6{background:#d4edda;color:#155724}
+.lv5,.lv4{background:#fff3cd;color:#856404}
+.lv3,.lv2,.lv1{background:#f8d7da;color:#721c24}
+
+/* ─ Score bar ─ */
+.score-bar{
+  background:var(--ink);color:#fff;border-radius:9px;padding:1.5rem;
+  display:grid;grid-template-columns:1fr auto;gap:1rem;margin-bottom:1.25rem;align-items:center
+}
+.score-bar .lbl{font-family:var(--mono);font-size:.65rem;color:#888;letter-spacing:.1em;text-transform:uppercase}
+.score-num{font-family:var(--mono);font-size:3rem;font-weight:600;color:var(--accent);line-height:1}
+.score-detail{font-family:var(--mono);font-size:.68rem;color:#666;margin-top:.2rem}
+
+/* ─ Maths warning ─ */
+.maths-warn{
+  display:none;background:#fff3cd;border:1px solid #ffc107;border-left:3px solid var(--accent);
+  border-radius:7px;padding:.9rem 1rem;font-size:.83rem;margin-bottom:1rem
+}
+
+/* ─ Trap indicator ─ */
+.trap{display:none;border-radius:7px;padding:.9rem 1.1rem;margin-bottom:1.1rem;align-items:flex-start;gap:.75rem}
+.trap-icon{font-size:1.2rem;flex-shrink:0;margin-top:.1rem}
+.trap-label{font-family:var(--mono);font-size:.72rem;font-weight:600;letter-spacing:.05em}
+.trap-body{font-size:.82rem;margin-top:.2rem;line-height:1.7}
+.t-A{background:#f8d7da;border:1px solid #f5c6cb;color:#721c24}
+.t-B{background:#fff3cd;border:1px solid #ffeeba;color:#856404}
+.t-C{background:#cce5ff;border:1px solid #b8daff;color:#004085}
+.t-D{background:#d4edda;border:1px solid #c3e6cb;color:#155724}
+
+/* ─ Results ─ */
+.results h3{font-family:var(--mono);font-size:.78rem;font-weight:600;margin-bottom:.875rem;letter-spacing:.04em}
+.prog-list{display:flex;flex-direction:column;gap:.5rem}
+.prog{
+  display:flex;align-items:center;justify-content:space-between;gap:.75rem;
+  padding:.7rem 1rem;border:1px solid var(--border);border-radius:7px;
+  background:#fff;flex-wrap:wrap
+}
+.prog-info .pname{font-weight:700;font-size:.85rem}
+.prog-info .pinst{font-size:.75rem;color:var(--muted)}
+.prog-tags{display:flex;gap:.4rem;flex-wrap:wrap;flex-shrink:0}
+
+.tag{
+  display:inline-flex;align-items:center;padding:.15rem .48rem;border-radius:3px;
+  font-family:var(--mono);font-size:.65rem;font-weight:600;letter-spacing:.03em
+}
+.t-eligible{background:#d4edda;color:#155724}
+.t-marginal{background:#fff3cd;color:#856404}
+.t-blocked{background:#f8d7da;color:#721c24}
+.t-nsfas{background:#cce5ff;color:#004085}
+.t-aps{background:var(--surface);color:var(--muted)}
+.t-demand-CRITICAL_SHORTAGE{background:#d4edda;color:#155724}
+.t-demand-HIGH{background:#cce5ff;color:#004085}
+.t-demand-MEDIUM{background:#fff3cd;color:#856404}
+.t-demand-LOW{background:#f8d7da;color:#721c24}
+
+.empty{text-align:center;padding:2.5rem 1rem;color:var(--muted)}
+.empty .ico{font-size:2rem;margin-bottom:.5rem}
+
+/* ─ CTA ─ */
+.cta{background:var(--ink);color:#fff;text-align:center;padding:3rem 1.5rem;margin-top:3rem}
+.cta h2{font-size:1.4rem;margin-bottom:.75rem}
+.cta p{color:#999;max-width:480px;margin:0 auto 1.5rem;font-size:.88rem}
+.cta a{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:var(--accent);color:#fff;padding:.8rem 1.75rem;
+  border-radius:7px;font-weight:700;font-size:.9rem;text-decoration:none
+}
+
+footer{background:#111;color:#555;text-align:center;padding:1.5rem;font-family:var(--mono);font-size:.65rem}
+footer a{color:#777}
+
+@media(max-width:580px){
+  .subjects{grid-template-columns:1fr}
+  .score-bar{grid-template-columns:1fr;text-align:center}
+}
+</style>
+</head>
+<body>
+<nav>
+  <span class="logo">E·<em>N</em>·I·L</span>
+  <div>
+    <a href="/">Home</a>
+    <a href="/credential-trap/">Credential Trap</a>
+    <a href="/nsfas/">NSFAS</a>
+    <a href="/ekurhuleni-map/">Ekurhuleni Map</a>
+  </div>
+</nav>
+
+<div class="banner">⚠ Mathematical Literacy permanently forecloses N1–N3 engineering pathways AND most BEng programmes. Check your combination below.</div>
+
+<div class="hero">
+  <h1>APS Calculator <em>2025</em></h1>
+  <p>Enter your matric marks. Instantly see which SA university programmes you qualify for — with NSFAS eligibility and Ekurhuleni labour demand signals.</p>
+</div>
+
+<div class="container">
+<div class="calc">
+  <h2>// ENTER YOUR MARKS</h2>
+
+  <div class="maths-warn" id="mathsWarn">
+    🚨 <strong>Mathematical Literacy selected.</strong> This permanently forecloses all N1–N3 engineering artisan pathways and all university engineering/science programmes that require pure Maths. Consider <strong>Technical Mathematics</strong> (opens TVET N1+ pathways) or <strong>Pure Mathematics</strong> (opens all pathways).
+  </div>
+
+  <div class="subjects" id="subjectGrid"></div>
+
+  <div class="score-bar">
+    <div>
+      <div class="lbl">Your APS Score</div>
+      <div class="score-num" id="apsTotal">0</div>
+      <div class="score-detail" id="apsDetail">Enter marks above</div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-family:var(--mono);font-size:.63rem;color:#888;margin-bottom:.25rem">BEST 6 SUBJECTS</div>
+      <div style="font-family:var(--mono);font-size:.75rem;color:#ccc" id="best6">—</div>
+    </div>
+  </div>
+
+  <div class="trap" id="trapBox">
+    <div class="trap-icon" id="trapIcon"></div>
+    <div>
+      <div class="trap-label" id="trapLabel"></div>
+      <div class="trap-body" id="trapBody"></div>
+    </div>
+  </div>
+
+  <div class="results">
+    <h3>// MATCHING PROGRAMMES</h3>
+    <div class="prog-list" id="progList">
+      <div class="empty"><div class="ico">📊</div><div>Enter your marks to see matching programmes</div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="cta">
+  <h2>Your APS is just the start.</h2>
+  <p>The Credential Trap Detector cross-references your subject combination against Ekurhuleni's live labour market. See which combinations open the highest-paying doors.</p>
+  <a href="/credential-trap/">Check Your Credential Trap Class →</a>
+</div>
+
+<footer>
+  ENIL Navigation Intelligence | Data: DBE 2024 · University Prospectuses 2025 · MERSETA · Ekurhuleni IDP 2024 |
+  <a href="/data/">Download raw data</a> · <a href="/">Home</a>
+</footer>
+
+<script>
+// ─── Data ────────────────────────────────────────────────────────────────────
+
+const SUBJECTS = [
+  {id:"hl",    label:"Home Language",           lo:false, mathsSelect:false},
+  {id:"fal",   label:"First Additional Language",lo:false, mathsSelect:false},
+  {id:"lo",    label:"Life Orientation",         lo:true,  mathsSelect:false},
+  {id:"maths", label:"Mathematics",              lo:false, mathsSelect:true},
+  {id:"s5",    label:"Subject 5",                lo:false, mathsSelect:false},
+  {id:"s6",    label:"Subject 6",                lo:false, mathsSelect:false},
+  {id:"s7",    label:"Subject 7 (optional)",     lo:false, mathsSelect:false},
+];
+
+const MATHS_TYPES = [
+  {v:"pure", l:"Pure Mathematics"},
+  {v:"lit",  l:"Mathematical Literacy"},
+  {v:"tech", l:"Technical Mathematics"},
+];
+
+const PROGRAMMES = [
+  // BEng
+  {n:"BSc Engineering (all streams)",   inst:"University of Pretoria",  fac:"Engineering",     minAPS:32, pureMaths:true,  nsfas:true, demand:"HIGH"},
+  {n:"BSc Engineering",                 inst:"Wits University",          fac:"Engineering",     minAPS:35, pureMaths:true,  nsfas:true, demand:"HIGH"},
+  {n:"BEng Tech (all streams)",         inst:"University of Johannesburg",fac:"Engineering",    minAPS:26, pureMaths:true,  nsfas:true, demand:"HIGH"},
+  {n:"Nat Diploma: Electrical Eng",     inst:"Tshwane Univ of Technology",fac:"Engineering",   minAPS:20, pureMaths:true,  nsfas:true, demand:"CRITICAL_SHORTAGE"},
+  {n:"Nat Diploma: Mechanical Eng",     inst:"Tshwane Univ of Technology",fac:"Engineering",   minAPS:20, pureMaths:true,  nsfas:true, demand:"HIGH"},
+  {n:"Nat Diploma: Civil Engineering",  inst:"Vaal University of Technology",fac:"Engineering", minAPS:18, pureMaths:true, nsfas:true, demand:"HIGH"},
+  // Medicine
+  {n:"MBBCh (Medicine)",                inst:"Wits University",          fac:"Health Sciences", minAPS:40, pureMaths:true,  nsfas:true, demand:"CRITICAL_SHORTAGE"},
+  {n:"MBChB (Medicine)",                inst:"Sefako Makgatho HSU",      fac:"Health Sciences", minAPS:38, pureMaths:true,  nsfas:true, demand:"CRITICAL_SHORTAGE"},
+  {n:"BSc Nursing",                     inst:"University of Pretoria",   fac:"Health Sciences", minAPS:26, pureMaths:false, nsfas:true, demand:"CRITICAL_SHORTAGE"},
+  // Commerce
+  {n:"BCom (General)",                  inst:"University of Pretoria",   fac:"Commerce",        minAPS:28, pureMaths:false, nsfas:true, demand:"MEDIUM"},
+  {n:"BCom Accounting",                 inst:"Wits University",          fac:"Commerce",        minAPS:32, pureMaths:false, nsfas:true, demand:"MEDIUM"},
+  {n:"BCom (General)",                  inst:"University of Johannesburg",fac:"Commerce",       minAPS:22, pureMaths:false, nsfas:true, demand:"MEDIUM"},
+  // Humanities
+  {n:"BA (General)",                    inst:"University of Johannesburg",fac:"Humanities",     minAPS:22, pureMaths:false, nsfas:true, demand:"LOW"},
+  {n:"BA (General)",                    inst:"University of Pretoria",   fac:"Humanities",      minAPS:25, pureMaths:false, nsfas:true, demand:"LOW"},
+  // TVET
+  {n:"NATED N3 Electrical Engineering", inst:"Springs TVET College",     fac:"Engineering",     minAPS:0,  pureMaths:false, nsfas:true, demand:"CRITICAL_SHORTAGE", tvet:true, note:"Not Maths Lit for N4+"},
+  {n:"NATED N3 Mechanical Engineering", inst:"Ekurhuleni East TVET",     fac:"Engineering",     minAPS:0,  pureMaths:false, nsfas:true, demand:"HIGH",               tvet:true},
+  {n:"NCV L4 Electrical Infrastructure",inst:"Ekurhuleni West TVET",     fac:"Engineering",     minAPS:0,  pureMaths:false, nsfas:true, demand:"HIGH",               tvet:true},
+  {n:"NCV L4 Information Technology",   inst:"Kempton Park TVET",        fac:"IT",              minAPS:0,  pureMaths:false, nsfas:true, demand:"HIGH",               tvet:true},
+  {n:"NCV L4 Finance & Accounting",     inst:"Germiston TVET",           fac:"Business",        minAPS:0,  pureMaths:false, nsfas:true, demand:"MEDIUM",             tvet:true},
+];
+
+// ─── State ───────────────────────────────────────────────────────────────────
+
+const marks = {hl:0, fal:0, lo:0, maths:0, s5:0, s6:0, s7:0};
+let mathsType = "pure";
+
+// ─── APS helpers ─────────────────────────────────────────────────────────────
+
+function pctToLevel(p){
+  if(p>=80) return 7;
+  if(p>=70) return 6;
+  if(p>=60) return 5;
+  if(p>=50) return 4;
+  if(p>=40) return 3;
+  if(p>=30) return 2;
+  return 1;
+}
+
+function calcAPS(){
+  const levels = {};
+  Object.keys(marks).forEach(k => levels[k] = marks[k] > 0 ? pctToLevel(marks[k]) : 0);
+  const scoring = ["hl","fal","maths","s5","s6","s7"]
+    .map(k => ({k, lv: levels[k]}))
+    .filter(x => x.lv > 0)
+    .sort((a,b) => b.lv - a.lv)
+    .slice(0,6);
+  const base = scoring.reduce((s,x) => s + x.lv, 0);
+  const lo   = levels.lo >= 4 ? 1 : 0;
+  return {total: base + lo, base, lo, scoring, levels};
+}
+
+// ─── Trap classification ──────────────────────────────────────────────────────
+
+function getTrap(aps, mt){
+  if(mt === "lit") return {cls:"A", icon:"⛔",
+    label:"CLASS A — CREDENTIAL TRAP",
+    body:"Mathematical Literacy permanently forecloses all N1–N3 engineering artisan pathways AND most STEM university programmes. This is the single most damaging subject choice in SA education."};
+  if(mt === "pure" && aps >= 28) return {cls:"D", icon:"✅",
+    label:"CLASS D — OPTIMAL PATHWAY",
+    body:"Your combination qualifies for multiple university programmes AND high-demand TVET pathways AND SETA-funded learnerships. Maximum optionality."};
+  if(mt === "tech") return {cls:"C", icon:"💡",
+    label:"CLASS C — INVISIBLE PATHWAY",
+    body:"Technical Mathematics opens TVET artisan pathways paying R32k–R45k/month within 5 years — more than many BCom graduates. These pathways are rarely presented as aspirational choices."};
+  if(aps > 0 && aps < 22) return {cls:"B", icon:"⚠️",
+    label:"CLASS B — CREDENTIAL MISMATCH RISK",
+    body:"Your APS may qualify for programmes with limited NSFAS coverage and weak Ekurhuleni labour demand. Explore TVET pathways — they may offer better income outcomes."};
+  return null;
+}
+
+// ─── Programme matching ───────────────────────────────────────────────────────
+
+function matchProgs(aps, mt){
+  return PROGRAMMES.map(p => {
+    const blocked  = p.pureMaths && mt === "lit";
+    const eligible = !blocked && aps >= p.minAPS;
+    const marginal = !blocked && !eligible && aps >= p.minAPS - 3 && p.minAPS > 0;
+    if(!eligible && !marginal && !blocked) return null;
+    return {...p, status: blocked ? "blocked" : eligible ? "eligible" : "marginal"};
+  }).filter(Boolean).sort((a,b)=>{
+    const o = {eligible:0, marginal:1, blocked:2};
+    return o[a.status] - o[b.status];
+  });
+}
+
+// ─── Render ───────────────────────────────────────────────────────────────────
+
+function render(){
+  const {total, base, lo, scoring, levels} = calcAPS();
+
+  document.getElementById("apsTotal").textContent  = total;
+  document.getElementById("apsDetail").textContent  = total > 0
+    ? `Best 6: ${base} pts${lo ? ` + LO: 1 pt` : ""}`
+    : "Enter marks above";
+  document.getElementById("best6").textContent = scoring.length
+    ? scoring.map(x=>x.lv).join(" + ")
+    : "—";
+
+  // Update level badges
+  SUBJECTS.forEach(s => {
+    const badge = document.getElementById(`badge_${s.id}`);
+    if(!badge) return;
+    const lv = levels[s.id];
+    badge.textContent = lv > 0 ? lv : "–";
+    badge.className = `lvl-badge${lv > 0 ? ` lv${lv}` : ""}`;
+  });
+
+  // Maths warning
+  document.getElementById("mathsWarn").style.display = mathsType === "lit" ? "block" : "none";
+
+  // Trap
+  const trap = getTrap(total, mathsType);
+  const box  = document.getElementById("trapBox");
+  if(trap && total > 0){
+    box.style.display = "flex";
+    box.className = `trap t-${trap.cls}`;
+    document.getElementById("trapIcon").textContent  = trap.icon;
+    document.getElementById("trapLabel").textContent = trap.label;
+    document.getElementById("trapBody").textContent  = trap.body;
+  } else {
+    box.style.display = "none";
+  }
+
+  // Programmes
+  const list  = document.getElementById("progList");
+  const progs = total > 0 ? matchProgs(total, mathsType) : [];
+
+  if(!progs.length){
+    list.innerHTML = `<div class="empty"><div class="ico">📊</div><div>Enter your marks to see matching programmes</div></div>`;
+    return;
+  }
+
+  list.innerHTML = "";
+  progs.slice(0, 22).forEach(p => {
+    const div = document.createElement("div");
+    div.className = "prog";
+
+    const info = document.createElement("div");
+    info.className = "prog-info";
+    info.innerHTML = `<div class="pname">${p.tvet?"🏭 ":""}${p.n}</div>
+      <div class="pinst">${p.inst} · ${p.fac}${p.note?` — <em>${p.note}</em>`:"" }</div>`;
+
+    const tags = document.createElement("div");
+    tags.className = "prog-tags";
+
+    const statusLabels = {eligible:"✓ QUALIFIES", marginal:"~ MARGINAL", blocked:"✗ BLOCKED"};
+    const demandLabels = {CRITICAL_SHORTAGE:"⚡ CRITICAL", HIGH:"↑ HIGH", MEDIUM:"→ MED", LOW:"↓ LOW"};
+
+    if(p.nsfas) tags.innerHTML += `<span class="tag t-nsfas">NSFAS</span>`;
+    tags.innerHTML += `<span class="tag t-${p.status}">${statusLabels[p.status]}</span>`;
+    tags.innerHTML += `<span class="tag t-demand-${p.demand}">${demandLabels[p.demand]}</span>`;
+    if(p.minAPS > 0) tags.innerHTML += `<span class="tag t-aps">APS ${p.minAPS}</span>`;
+
+    div.appendChild(info);
+    div.appendChild(tags);
+    list.appendChild(div);
+  });
+}
+
+// ─── Build subject inputs ─────────────────────────────────────────────────────
+
+function buildMarkSelect(id){
+  const sel = document.createElement("select");
+  sel.id = `sel_${id}`;
+  const empty = new Option("— %", "");
+  sel.add(empty);
+  const bands = [
+    {from:100,to:80,step:5,lv:l=>`${l}% (L${pctToLevel(l)})`},
+    {from:79, to:70,step:3,lv:l=>`${l}% (L6)`},
+    {from:69, to:60,step:3,lv:l=>`${l}% (L5)`},
+    {from:59, to:50,step:3,lv:l=>`${l}% (L4)`},
+    {from:49, to:40,step:3,lv:l=>`${l}% (L3)`},
+    {from:39, to:30,step:3,lv:l=>`${l}% (L2)`},
+    {from:29, to:0, step:5,lv:l=>`${l}% (L1)`},
+  ];
+  bands.forEach(b=>{
+    for(let v=b.from; v>=b.to; v-=b.step){
+      sel.add(new Option(b.lv(v), v));
+    }
+  });
+  sel.addEventListener("change", ()=>{
+    marks[id] = parseInt(sel.value)||0;
+    render();
+  });
+  return sel;
+}
+
+const grid = document.getElementById("subjectGrid");
+SUBJECTS.forEach(s => {
+  const row   = document.createElement("div");
+  row.className = "subj-row";
+
+  const lbl = document.createElement("label");
+  lbl.textContent = s.label;
+  lbl.setAttribute("for", `sel_${s.id}`);
+
+  const badge = document.createElement("div");
+  badge.className = "lvl-badge";
+  badge.id = `badge_${s.id}`;
+  badge.textContent = "–";
+
+  if(s.mathsSelect){
+    const wrapper = document.createElement("div");
+    wrapper.style.cssText = "display:flex;gap:.4rem;align-items:center";
+
+    const typesel = document.createElement("select");
+    typesel.style.cssText = "padding:.3rem .4rem;border:1px solid var(--border);border-radius:5px;font-family:inherit;font-size:.72rem";
+    MATHS_TYPES.forEach(t => typesel.add(new Option(t.l.replace(" Mathematics",""), t.v)));
+    typesel.addEventListener("change", ()=>{ mathsType = typesel.value; render(); });
+
+    wrapper.appendChild(typesel);
+    wrapper.appendChild(buildMarkSelect(s.id));
+    row.appendChild(lbl);
+    row.appendChild(wrapper);
+  } else {
+    row.appendChild(lbl);
+    row.appendChild(buildMarkSelect(s.id));
+  }
+
+  row.appendChild(badge);
+  grid.appendChild(row);
+});
+
+render();
+</script>
+</body>
+</html>
