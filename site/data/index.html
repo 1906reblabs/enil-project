@@ -1,1 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Education Data Downloads — SA Education Datasets | ENIL</title>
+<meta name="description" content="Download free South African education datasets. TVET vs vacancy gap table, APS requirements, NSFAS rejection codes, DBE subject performance. All ENIL data is freely available for research and policy use.">
+<link rel="canonical" href="https://enil.co.za/data/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0a0a08;--paper:#f2f0e8;--surface:#e8e5dc;--card:#fff;--accent:#c8391a;--gold:#b8890f;--green:#1a6b32;--blue:#1a3f7a;--muted:#7a7868;--border:#d0cdc0;--mono:'IBM Plex Mono',monospace;--sans:'Syne',system-ui,sans-serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.6}
+nav{background:var(--ink);border-bottom:2px solid var(--accent);padding:.9rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.logo{font-family:var(--mono);font-weight:600;font-size:.95rem;letter-spacing:.2em;color:#fff}
+.logo em{color:var(--accent);font-style:normal}
+nav a{color:#888;text-decoration:none;font-family:var(--mono);font-size:.7rem;margin-left:1.25rem}
+nav a:hover{color:#fff}
+.hero{background:var(--ink);color:#fff;padding:2.5rem 1.5rem 2rem;border-bottom:3px solid var(--accent)}
+.hero-inner{max-width:860px;margin:0 auto}
+.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;line-height:1.15;margin-bottom:.75rem}
+.hero h1 em{color:var(--accent);font-style:normal}
+.hero p{color:#aaa;max-width:540px;font-size:.88rem;line-height:1.85}
+.container{max-width:860px;margin:0 auto;padding:0 1.5rem}
+.section{padding:2.5rem 0;border-top:1px solid var(--border)}
+.section:first-child{border-top:none}
+.sec-label{font-family:var(--mono);font-size:.63rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);margin-bottom:.5rem}
+.section h2{font-size:1.4rem;font-weight:700;margin-bottom:1.25rem}
+.dataset-grid{display:flex;flex-direction:column;gap:.75rem}
+.dataset{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1.25rem 1.5rem;display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:center}
+.dataset h3{font-weight:700;font-size:.9rem;margin-bottom:.25rem}
+.dataset p{font-size:.8rem;color:var(--muted);line-height:1.75}
+.dataset-meta{display:flex;gap:.6rem;margin-top:.5rem;flex-wrap:wrap}
+.meta-tag{font-family:var(--mono);font-size:.62rem;padding:.15rem .45rem;border-radius:3px;background:var(--surface);color:var(--muted)}
+.dl-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--ink);color:#fff;padding:.55rem 1rem;border-radius:6px;font-family:var(--mono);font-size:.7rem;font-weight:600;text-decoration:none;white-space:nowrap;flex-shrink:0;transition:background .15s}
+.dl-btn:hover{background:var(--accent)}
+.dl-btn.pending{background:var(--surface);color:var(--muted);cursor:default}
+.licence{background:rgba(26,107,50,.04);border:1px solid rgba(26,107,50,.2);border-radius:8px;padding:1.25rem 1.5rem;margin:2rem 0;font-size:.85rem;line-height:1.85}
+.licence strong{font-family:var(--mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--green);display:block;margin-bottom:.4rem}
+footer{background:#111;color:#555;text-align:center;padding:1.5rem;font-family:var(--mono);font-size:.65rem}
+footer a{color:#777}
+@media(max-width:580px){.dataset{grid-template-columns:1fr}.dl-btn{align-self:flex-start}}
+</style>
+</head>
+<body>
+<nav>
+  <span class="logo">E·<em>N</em>·I·L</span>
+  <div>
+    <a href="/">Home</a>
+    <a href="/aps-calculator/">APS</a>
+    <a href="/credential-trap/">Credential Trap</a>
+    <a href="/nsfas/">NSFAS</a>
+    <a href="/ekurhuleni-map/">Ekurhuleni Map</a>
+  </div>
+</nav>
 
+<div class="hero">
+  <div class="hero-inner">
+    <h1>The Data Is <em>Free.</em></h1>
+    <p>Every dataset ENIL produces is freely downloadable for researchers, journalists, policy advocates, and institutions. No registration required. Attribution requested: ENIL Navigation Intelligence (enil.co.za).</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="licence">
+    <strong>📄 Licence</strong>
+    All ENIL datasets are released under a Creative Commons Attribution 4.0 International (CC BY 4.0) licence. You may use, share, and adapt these datasets for any purpose — including commercial — provided you credit ENIL Navigation Intelligence (enil.co.za) as the source.
+  </div>
+
+  <div class="section">
+    <div class="sec-label">// Labour Market</div>
+    <h2>Ekurhuleni Gap Table</h2>
+    <div class="dataset-grid">
+      <div class="dataset">
+        <div>
+          <h3>Ekurhuleni Demand Gap Table — Full Dataset</h3>
+          <p>TVET graduate output vs open vacancy count for 15 occupations across Springs, Germiston, and Kempton Park. Includes demand signal, salary benchmarks, and SETA classification. Updated quarterly from MERSETA, EWSETA, PNet, and LinkedIn data.</p>
+          <div class="dataset-meta">
+            <span class="meta-tag">JSON</span><span class="meta-tag">CSV</span>
+            <span class="meta-tag">15 occupations</span><span class="meta-tag">Updated: Q4 2024</span>
+          </div>
+        </div>
+        <a href="/data/demand_gap.json" class="dl-btn" download>↓ JSON</a>
+      </div>
+      <div class="dataset">
+        <div>
+          <h3>Ekurhuleni Vacancy Raw Data</h3>
+          <p>Individual vacancy records with zone (Springs/Germiston/Kempton Park), source, scrape date, salary, and employer type. 18 job categories, ~1,850 records.</p>
+          <div class="dataset-meta">
+            <span class="meta-tag">JSON</span><span class="meta-tag">~1,850 records</span><span class="meta-tag">Updated: Oct 2024</span>
+          </div>
+        </div>
+        <a href="/data/vacancies.json" class="dl-btn" download>↓ JSON</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-label">// APS & University Admissions</div>
+    <h2>APS Requirements Database</h2>
+    <div class="dataset-grid">
+      <div class="dataset">
+        <div>
+          <h3>APS Requirements — All 26 SA Universities (2025)</h3>
+          <p>Minimum APS, required subjects, excluded subjects (e.g. Maths Literacy), NSFAS eligibility, and Ekurhuleni labour demand signal for each programme. Seeded baseline of 20 programmes across 10+ institutions; growing as prospectuses are processed.</p>
+          <div class="dataset-meta">
+            <span class="meta-tag">CSV</span><span class="meta-tag">JSON</span>
+            <span class="meta-tag">20+ programmes</span><span class="meta-tag">2025 prospectuses</span>
+          </div>
+        </div>
+        <a href="/data/aps_programmes.json" class="dl-btn" download>↓ JSON</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-label">// NSFAS</div>
+    <h2>NSFAS State Machine & Alerts</h2>
+    <div class="dataset-grid">
+      <div class="dataset">
+        <div>
+          <h3>NSFAS State Machine — Full Definition</h3>
+          <p>All 6 NSFAS states with crisis points, required documents, action steps, and ENIL response templates. Version 1.0 — updated as new circulars are published.</p>
+          <div class="dataset-meta">
+            <span class="meta-tag">JSON</span><span class="meta-tag">6 states</span><span class="meta-tag">7 rejection codes</span>
+          </div>
+        </div>
+        <a href="/data/nsfas_alerts.json" class="dl-btn" download>↓ JSON</a>
+      </div>
+      <div class="dataset">
+        <div>
+          <h3>NSFAS Active Alerts Feed</h3>
+          <p>Machine-readable alerts feed. Updated automatically when NSFAS portal status changes or new circulars are detected. Suitable for integration into student-facing apps.</p>
+          <div class="dataset-meta">
+            <span class="meta-tag">JSON</span><span class="meta-tag">Live feed</span><span class="meta-tag">Webhook-compatible</span>
+          </div>
+        </div>
+        <a href="/data/nsfas_alerts.json" class="dl-btn" download>↓ JSON</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-label">// DBE / Matric</div>
+    <h2>DBE Matric & Subject Performance</h2>
+    <div class="dataset-grid">
+      <div class="dataset">
+        <div>
+          <h3>NSC Pass Rates by Province — 2021–2023</h3>
+          <p>Provincial NSC results with candidate count, pass count, pass rate, and bachelor rate. 2023 Gauteng pass rate: 74.2%. Trend data for 3 cohorts.</p>
+          <div class="dataset-meta">
+            <span class="meta-tag">CSV</span><span class="meta-tag">9 provinces</span><span class="meta-tag">3 years</span>
+          </div>
+        </div>
+        <a href="/data/aps_requirements.csv" class="dl-btn" download>↓ CSV</a>
+      </div>
+      <div class="dataset">
+        <div>
+          <h3>Subject Performance + Credential Trap Classification</h3>
+          <p>2023 performance data for 11 CAPS subjects including pass rate, average mark, Level 6+ rate, and ENIL credential trap classification (Class A–D). Includes Mathematical Literacy vs Technical Mathematics comparison.</p>
+          <div class="dataset-meta">
+            <span class="meta-tag">CSV</span><span class="meta-tag">11 subjects</span><span class="meta-tag">Trap class included</span>
+          </div>
+        </div>
+        <a href="/data/aps_requirements.csv" class="dl-btn" download>↓ CSV</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-label">// For Institutions</div>
+    <h2>Structured Intelligence Reports</h2>
+    <div class="dataset-grid">
+      <div class="dataset">
+        <div>
+          <h3>SETA Learnership Allocation Brief — Ekurhuleni Q4 2024</h3>
+          <p>20-page structured report: demand gap by OFO code, graduate pipeline forecast, recommended learnership allocation priorities. Designed for MERSETA, EWSETA, and TETA Gauteng regional offices.</p>
+          <div class="dataset-meta">
+            <span class="meta-tag">PDF</span><span class="meta-tag">B2B Report</span><span class="meta-tag">Available on request</span>
+          </div>
+        </div>
+        <a href="mailto:data@enil.co.za?subject=SETA%20Report%20Request" class="dl-btn">Request PDF</a>
+      </div>
+      <div class="dataset">
+        <div>
+          <h3>TVET Employment Outcomes Dashboard</h3>
+          <p>Branded microsite showing live vacancy demand for a specific college's programmes. Built for TVET college principals to demonstrate graduate employment outcomes to DHET. Quote on request.</p>
+          <div class="dataset-meta">
+            <span class="meta-tag">Dashboard</span><span class="meta-tag">Quarterly updates</span><span class="meta-tag">Custom domain</span>
+          </div>
+        </div>
+        <a href="mailto:data@enil.co.za?subject=Dashboard%20Enquiry" class="dl-btn" style="background:var(--blue)">Get a Quote</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  ENIL Navigation Intelligence | All datasets CC BY 4.0 | enil.co.za |
+  <a href="/about/">About</a> · <a href="/">Home</a>
+</footer>
+</body>
+</html>
