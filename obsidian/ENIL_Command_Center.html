@@ -1,1 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENIL Command Center — Infrastructure Setup & Operations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0a0a08;--paper:#f2f0e8;--surface:#e8e5dc;--card:#faf9f4;
+  --accent:#c8391a;--gold:#b8890f;--green:#1a6b32;--blue:#1a3f7a;
+  --muted:#7a7868;--border:#d0cdc0;--mono:'IBM Plex Mono',monospace;
+  --sans:'Syne',system-ui,sans-serif;--serif:'Libre Baskerville',Georgia,serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:15px}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.6;overflow-x:hidden}
 
+/* ─ Layout ─ */
+.shell{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+
+/* ─ Sidebar ─ */
+.sidebar{
+  background:var(--ink);color:var(--paper);
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  display:flex;flex-direction:column;
+  border-right:2px solid var(--accent)
+}
+.sb-logo{
+  padding:1.5rem 1.25rem 1rem;
+  border-bottom:1px solid rgba(255,255,255,.1)
+}
+.sb-wordmark{
+  font-family:var(--mono);font-weight:600;font-size:1rem;
+  letter-spacing:.2em;color:var(--paper)
+}
+.sb-wordmark em{color:var(--accent);font-style:normal}
+.sb-sub{font-family:var(--mono);font-size:.6rem;color:#666;
+  letter-spacing:.12em;text-transform:uppercase;margin-top:.3rem}
+
+.sb-section{padding:.75rem 0}
+.sb-label{
+  font-family:var(--mono);font-size:.55rem;text-transform:uppercase;
+  letter-spacing:.18em;color:#555;padding:.3rem 1.25rem;margin-bottom:.2rem
+}
+.sb-link{
+  display:flex;align-items:center;gap:.6rem;
+  padding:.45rem 1.25rem;color:#aaa;text-decoration:none;
+  font-family:var(--mono);font-size:.72rem;
+  border-left:2px solid transparent;transition:all .15s
+}
+.sb-link:hover{color:var(--paper);background:rgba(255,255,255,.06)}
+.sb-link.active{color:var(--accent);border-left-color:var(--accent);background:rgba(200,57,26,.12)}
+.sb-link .dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0}
+
+.sb-status{
+  margin:auto 1rem 1.25rem;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);
+  border-radius:6px;padding:.7rem .9rem;font-family:var(--mono);font-size:.65rem
+}
+.sb-status .lbl{color:#666;margin-bottom:.4rem}
+.pulse{display:inline-block;width:6px;height:6px;border-radius:50%;
+  background:var(--green);margin-right:.4rem;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ─ Main ─ */
+.main{min-height:100vh;max-width:900px}
+
+/* ─ Hero ─ */
+.hero{
+  padding:3.5rem 3rem 2.5rem;
+  background:var(--ink);color:var(--paper);
+  border-bottom:3px solid var(--accent);
+  position:relative;overflow:hidden
+}
+.hero::after{
+  content:'E·N·I·L';font-family:var(--mono);font-weight:600;
+  font-size:14rem;opacity:.025;position:absolute;right:-2rem;top:-2rem;
+  line-height:1;pointer-events:none;letter-spacing:.05em
+}
+.hero-flag{
+  display:inline-flex;align-items:center;gap:.5rem;
+  border:1px solid rgba(200,57,26,.6);border-radius:3px;
+  padding:.25rem .75rem;font-family:var(--mono);font-size:.65rem;
+  color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.25rem
+}
+.hero h1{
+  font-family:var(--serif);font-size:clamp(1.9rem,4vw,3rem);
+  font-weight:700;line-height:1.15;max-width:640px
+}
+.hero h1 em{color:var(--accent);font-style:italic}
+.hero p{color:#aaa;max-width:540px;margin-top:1rem;font-size:.9rem;line-height:1.8}
+
+.hero-metrics{display:flex;gap:2rem;margin-top:2rem;flex-wrap:wrap}
+.metric .val{font-family:var(--mono);font-size:2rem;font-weight:600;color:var(--accent);line-height:1}
+.metric .lbl{font-family:var(--mono);font-size:.62rem;color:#666;text-transform:uppercase;letter-spacing:.1em;margin-top:.2rem}
+
+/* ─ Content ─ */
+.content{padding:0 3rem 5rem}
+
+.section{padding-top:3rem;border-top:1px solid var(--border);margin-top:3rem}
+.section:first-child{border-top:none;margin-top:0}
+
+.sec-header{display:flex;align-items:baseline;gap:1rem;margin-bottom:1.75rem}
+.sec-num{font-family:var(--mono);font-size:.65rem;color:var(--accent);letter-spacing:.1em}
+.sec-title{font-family:var(--serif);font-size:1.7rem;font-weight:700;line-height:1.2}
+
+/* ─ Cards ─ */
+.card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:8px;padding:1.25rem 1.5rem;margin-bottom:.875rem
+}
+.card.red{border-left:3px solid var(--accent)}
+.card.gold{border-left:3px solid var(--gold)}
+.card.green{border-left:3px solid var(--green)}
+.card.blue{border-left:3px solid var(--blue)}
+.card h3{font-family:var(--mono);font-size:.8rem;font-weight:600;margin-bottom:.6rem}
+.card p{font-size:.85rem;color:var(--muted);line-height:1.75}
+
+/* ─ Grid ─ */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:.875rem}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:.875rem}
+
+/* ─ Code ─ */
+.code-block{background:#0d0d0a;border:1px solid #2a2a20;border-radius:8px;overflow:hidden;margin:1rem 0}
+.code-top{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.5rem 1rem;background:#141410;border-bottom:1px solid #2a2a20;
+  font-family:var(--mono);font-size:.65rem
+}
+.code-lang{color:#6a8faf}
+.copy{
+  background:none;border:1px solid #3a3a30;border-radius:4px;
+  color:#666;padding:.15rem .5rem;font-family:var(--mono);font-size:.62rem;
+  cursor:pointer;transition:all .15s
+}
+.copy:hover{color:#ccc;border-color:#888}
+.copy.ok{color:#4a9a5a;border-color:#4a9a5a}
+pre{
+  padding:1.1rem 1.25rem;font-family:var(--mono);font-size:.75rem;
+  line-height:1.8;color:#b8b5a8;overflow-x:auto
+}
+.cm{color:#4a4a3a}.cs{color:#7a9a5a}.ck{color:#5a8fbf}.cv{color:#b89a40}.ca{color:#c8391a}.cg{color:#4a9a5a}
+
+/* ─ Steps ─ */
+.steps{display:flex;flex-direction:column}
+.step{display:flex;gap:1.25rem;position:relative}
+.step:not(:last-child)::after{
+  content:'';position:absolute;left:17px;top:38px;bottom:-6px;
+  width:1px;background:var(--border)
+}
+.step-n{
+  width:36px;height:36px;border-radius:50%;border:1.5px solid var(--accent);
+  background:var(--card);display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:.75rem;font-weight:600;
+  color:var(--accent);flex-shrink:0;z-index:1
+}
+.step-body{flex:1;padding-bottom:2rem}
+.step-title{font-weight:700;font-size:.9rem;margin-bottom:.4rem;color:var(--ink)}
+.step-desc{font-size:.83rem;color:var(--muted);line-height:1.8}
+
+/* ─ Table ─ */
+.tbl{width:100%;border-collapse:collapse;font-size:.8rem;margin:1rem 0}
+.tbl th{text-align:left;padding:.55rem .8rem;background:var(--surface);
+  font-family:var(--mono);font-size:.63rem;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--muted);border-bottom:1px solid var(--border)}
+.tbl td{padding:.65rem .8rem;border-bottom:1px solid rgba(200,195,185,.4);
+  vertical-align:top;color:var(--ink)}
+.tbl tr:hover td{background:rgba(0,0,0,.025)}
+
+/* ─ Tags / Badges ─ */
+.badge{display:inline-flex;align-items:center;padding:.15rem .5rem;border-radius:3px;
+  font-family:var(--mono);font-size:.65rem;font-weight:600;letter-spacing:.04em}
+.b-red{background:rgba(200,57,26,.1);color:var(--accent)}
+.b-green{background:rgba(26,107,50,.1);color:var(--green)}
+.b-gold{background:rgba(184,137,15,.1);color:var(--gold)}
+.b-blue{background:rgba(26,63,122,.1);color:var(--blue)}
+.b-gray{background:var(--surface);color:var(--muted)}
+
+/* ─ Callout ─ */
+.callout{border-radius:6px;padding:1rem 1.25rem;margin:1rem 0;font-size:.85rem;line-height:1.8}
+.callout strong{display:block;font-family:var(--mono);font-size:.65rem;
+  text-transform:uppercase;letter-spacing:.1em;margin-bottom:.35rem}
+.cl-info{background:rgba(26,63,122,.06);border:1px solid rgba(26,63,122,.2)}
+.cl-info strong{color:var(--blue)}
+.cl-warn{background:rgba(184,137,15,.06);border:1px solid rgba(184,137,15,.2)}
+.cl-warn strong{color:var(--gold)}
+.cl-crit{background:rgba(200,57,26,.06);border:1px solid rgba(200,57,26,.2)}
+.cl-crit strong{color:var(--accent)}
+.cl-ok{background:rgba(26,107,50,.06);border:1px solid rgba(26,107,50,.2)}
+.cl-ok strong{color:var(--green)}
+.cl-insight{
+  background:rgba(184,137,15,.04);border:1px solid rgba(184,137,15,.15);
+  border-left:3px solid var(--gold);font-family:var(--serif);font-style:italic;
+  color:#444
+}
+
+/* ─ Moat bars ─ */
+.moat{margin-bottom:.9rem}
+.moat-row{display:flex;justify-content:space-between;align-items:baseline;
+  font-family:var(--mono);font-size:.68rem;color:var(--muted);margin-bottom:.3rem}
+.moat-row span:last-child{color:var(--ink)}
+.moat-track{height:5px;background:var(--surface);border-radius:3px;overflow:hidden}
+.moat-fill{height:100%;border-radius:3px;transition:width 1.2s ease .2s}
+
+/* ─ Repo diagram ─ */
+.repo-flow{
+  display:flex;align-items:center;gap:0;
+  background:var(--surface);border:1px solid var(--border);border-radius:8px;
+  padding:1.25rem;margin:1rem 0;overflow-x:auto
+}
+.repo-box{
+  background:var(--card);border:1px solid var(--border);border-radius:6px;
+  padding:.9rem 1rem;text-align:center;min-width:140px;flex-shrink:0
+}
+.repo-box .rn{font-family:var(--mono);font-size:.72rem;font-weight:600;color:var(--ink)}
+.repo-box .rd{font-family:var(--mono);font-size:.6rem;color:var(--muted);margin-top:.25rem}
+.repo-box .rt{font-family:var(--mono);font-size:.58rem;margin-top:.35rem}
+.repo-arrow{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  padding:0 .75rem;min-width:60px
+}
+.repo-arrow .arr{color:var(--accent);font-size:1rem}
+.repo-arrow .albl{font-family:var(--mono);font-size:.58rem;color:var(--muted);margin-top:.2rem;text-align:center}
+
+@media(max-width:800px){
+  .shell{grid-template-columns:1fr}
+  .sidebar{position:static;height:auto}
+  .hero,.content{padding-left:1.5rem;padding-right:1.5rem}
+  .g2,.g3{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- ─ Sidebar ─ -->
+<aside class="sidebar">
+  <div class="sb-logo">
+    <div class="sb-wordmark">E·<em>N</em>·I·L</div>
+    <div class="sb-sub">Command Center v1.0</div>
+  </div>
+  <nav>
+    <div class="sb-section">
+      <div class="sb-label">Infrastructure</div>
+      <a href="#github" class="sb-link"><span class="dot"></span>GitHub Architecture</a>
+      <a href="#env"    class="sb-link"><span class="dot"></span>Environment Setup</a>
+      <a href="#pipeline" class="sb-link"><span class="dot"></span>Pipeline Config</a>
+      <a href="#site"   class="sb-link"><span class="dot"></span>Site Deployment</a>
+      <a href="#secrets" class="sb-link"><span class="dot"></span>Secrets Reference</a>
+    </div>
+    <div class="sb-section">
+      <div class="sb-label">Operations</div>
+      <a href="#weekly"  class="sb-link"><span class="dot"></span>Weekly Loop</a>
+      <a href="#nsfas"   class="sb-link"><span class="dot"></span>NSFAS State Machine</a>
+      <a href="#seo"     class="sb-link"><span class="dot"></span>SEO Engine</a>
+      <a href="#dist"    class="sb-link"><span class="dot"></span>Distribution</a>
+    </div>
+    <div class="sb-section">
+      <div class="sb-label">Revenue</div>
+      <a href="#b2b"     class="sb-link"><span class="dot"></span>B2B Pipeline</a>
+      <a href="#products" class="sb-link"><span class="dot"></span>Product Specs</a>
+      <a href="#moats"   class="sb-link"><span class="dot"></span>Moat Assessment</a>
+    </div>
+    <div class="sb-section">
+      <div class="sb-label">Reference</div>
+      <a href="#files"   class="sb-link"><span class="dot"></span>File Manifest</a>
+      <a href="#cron"    class="sb-link"><span class="dot"></span>Cron Schedule</a>
+    </div>
+  </nav>
+  <div class="sb-status">
+    <div class="lbl">SYSTEM STATUS</div>
+    <div><span class="pulse"></span><span style="color:#4a9a5a">Pipeline Ready</span></div>
+    <div style="margin-top:.3rem;color:#555">enil.co.za → pending DNS</div>
+  </div>
+</aside>
+
+<!-- ─ Main ─ -->
+<main class="main">
+<div class="hero">
+  <div class="hero-flag">⬡ Strategic Infrastructure — Beachhead Edition 2025</div>
+  <h1>The <em>Decoder Ring</em><br>for a Failing State System</h1>
+  <p>Complete setup guide: GitHub architecture, pipeline, site deployment, SEO engine, and revenue execution — from zero to operational in 30 days, zero capital required.</p>
+  <div class="hero-metrics">
+    <div class="metric"><div class="val">26</div><div class="lbl">SA Universities Tracked</div></div>
+    <div class="metric"><div class="val">R0</div><div class="lbl">Capital Required</div></div>
+    <div class="metric"><div class="val">30d</div><div class="lbl">Launch Timeline</div></div>
+    <div class="metric"><div class="val">~95%</div><div class="lbl">B2B Margin</div></div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- ══ 01 GITHUB ══ -->
+<div class="section" id="github">
+  <div class="sec-header">
+    <span class="sec-num">01 //</span>
+    <h2 class="sec-title">GitHub Architecture</h2>
+  </div>
+
+  <div class="callout cl-insight">
+    "GitHub becomes your database, your server, your CDN, and your CI/CD pipeline — at zero cost. Every commit to enil-data triggers a site rebuild via Actions. GitHub Pages is your hosting. The only monthly cost is your domain: R150/year."
+  </div>
+
+  <div class="repo-flow">
+    <div class="repo-box">
+      <div class="rn">ENIL-ZA/enil-data</div>
+      <div class="rd">🔒 Private</div>
+      <div class="rt"><span class="badge b-red">Core Asset</span></div>
+    </div>
+    <div class="repo-arrow">
+      <div class="arr">→</div>
+      <div class="albl">Actions trigger<br>on data push</div>
+    </div>
+    <div class="repo-box">
+      <div class="rn">ENIL-ZA/enil-site</div>
+      <div class="rd">🌐 Public / Pages</div>
+      <div class="rt"><span class="badge b-blue">enil.co.za</span></div>
+    </div>
+    <div class="repo-arrow">
+      <div class="arr">→</div>
+      <div class="albl">Static HTML<br>served via Pages</div>
+    </div>
+    <div class="repo-box">
+      <div class="rn">Google / WhatsApp</div>
+      <div class="rd">Distribution</div>
+      <div class="rt"><span class="badge b-green">SEO + Community</span></div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="card red">
+      <h3>🔒 ENIL-ZA/enil-data (PRIVATE)</h3>
+      <p>Raw extracted data, validated CSVs/JSONs, all Python pipeline code, run logs, weekly reports, Obsidian vault, revenue pipeline. This is the core intellectual asset — access controlled via Personal Access Token.</p>
+    </div>
+    <div class="card blue">
+      <h3>🌐 ENIL-ZA/enil-site (PUBLIC)</h3>
+      <p>GitHub Pages static site. Auto-rebuilt when enil-data pushes new data. Pure HTML/CSS/JS — no backend, no Node.js, no server. Core Web Vitals excellent by default on static files under 50KB.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--mono);font-size:.8rem;margin:1.5rem 0 1rem;color:var(--muted)">STEP-BY-STEP: ORGANISATION + REPO SETUP</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-n">1</div>
+      <div class="step-body">
+        <div class="step-title">Create GitHub Organisation: ENIL-ZA</div>
+        <div class="step-desc">github.com → your avatar → Settings → Organizations → New Organization. Name: <code style="font-family:var(--mono);color:var(--accent)">ENIL-ZA</code>. Free plan supports unlimited repos and private repos for small teams.</div>
+        <div class="code-block">
+          <div class="code-top"><span class="code-lang">URL</span></div>
+          <pre>https://github.com/organizations/new</pre>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">2</div>
+      <div class="step-body">
+        <div class="step-title">Create enil-data (Private) and push pipeline files</div>
+        <div class="code-block">
+          <div class="code-top"><span class="code-lang">bash</span><button class="copy" onclick="cp(this)">Copy</button></div>
+          <pre><span class="cm"># Clone new repo and copy the full pipeline package</span>
+git clone https://github.com/ENIL-ZA/enil-data.git
+cd enil-data
+mkdir -p pipeline/scrapers .github/workflows
+mkdir -p pipeline/data/{dbe,nsfas,aps,labour} pipeline/runs logs weekly_reports
+
+<span class="cm"># Copy all files from the ENIL implementation package</span>
+cp enil-package/pipeline/schema.py          pipeline/
+cp enil-package/pipeline/pipeline.py        pipeline/
+cp enil-package/pipeline/scrapers/*.py      pipeline/scrapers/
+cp enil-package/.github/workflows/*.yml     .github/workflows/
+cp enil-package/requirements.txt            .
+cp enil-package/weekly_orchestrator.py      .
+
+git add -A
+git commit -m <span class="cs">"feat: ENIL pipeline v1.0.0 — initial setup"</span>
+git push</pre>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">3</div>
+      <div class="step-body">
+        <div class="step-title">Create enil-site (Public) and enable GitHub Pages</div>
+        <div class="code-block">
+          <div class="code-top"><span class="code-lang">bash</span><button class="copy" onclick="cp(this)">Copy</button></div>
+          <pre>git clone https://github.com/ENIL-ZA/enil-site.git
+cd enil-site
+mkdir -p site/{aps-calculator,nsfas,credential-trap,ekurhuleni-map,data}
+mkdir -p .github/workflows
+
+cp enil-package/site/index.html              site/
+cp enil-package/site/aps-calculator/index.html site/aps-calculator/
+cp enil-package/.github/workflows/site_rebuild.yml .github/workflows/
+
+<span class="cm"># Enable Pages: Settings → Pages → Source: GitHub Actions</span>
+
+git add -A
+git commit -m <span class="cs">"feat: ENIL site v1.0.0 — initial deploy"</span>
+git push</pre>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">4</div>
+      <div class="step-body">
+        <div class="step-title">Register enil.co.za — R150/year — and configure DNS</div>
+        <div class="step-desc">Register at afrihost.com, domains.co.za, or xneelo.co.za. Then add these DNS records:</div>
+        <div class="code-block">
+          <div class="code-top"><span class="code-lang">DNS Records</span><button class="copy" onclick="cp(this)">Copy</button></div>
+          <pre><span class="cm"># A Records — all 4 GitHub Pages IPs</span>
+A    @    185.199.108.153
+A    @    185.199.109.153
+A    @    185.199.110.153
+A    @    185.199.111.153
+
+<span class="cm"># CNAME for www</span>
+CNAME    www    enil-za.github.io
+
+<span class="cm"># Then: enil-site repo → Settings → Pages → Custom domain → enil.co.za</span>
+<span class="cm"># Check: Enforce HTTPS (issued free by GitHub via Let's Encrypt)</span></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /github -->
+
+<!-- ══ 02 ENVIRONMENT ══ -->
+<div class="section" id="env">
+  <div class="sec-header">
+    <span class="sec-num">02 //</span>
+    <h2 class="sec-title">Environment Setup</h2>
+  </div>
+
+  <div class="code-block">
+    <div class="code-top"><span class="code-lang">bash — Python 3.11+ required</span><button class="copy" onclick="cp(this)">Copy</button></div>
+    <pre><span class="cm"># 1. Create virtual environment</span>
+cd enil-data
+python -m venv .venv
+source .venv/bin/activate      <span class="cm"># Windows: .venv\Scripts\activate</span>
+
+<span class="cm"># 2. Install all dependencies</span>
+pip install -r requirements.txt
+
+<span class="cm"># 3. Install Playwright browser</span>
+playwright install chromium
+
+<span class="cm"># 4. Install Tesseract OCR</span>
+sudo apt-get install tesseract-ocr tesseract-ocr-eng tesseract-ocr-afr   <span class="cm"># Ubuntu</span>
+brew install tesseract tesseract-lang                                      <span class="cm"># macOS</span>
+
+<span class="cm"># 5. Validate everything works</span>
+python pipeline/schema.py          <span class="cm"># → ✅ Schema validation passed</span>
+python pipeline/pipeline.py --dry-run  <span class="cm"># → ✅ PASSED</span></pre>
+  </div>
+
+  <h3 style="font-family:var(--mono);font-size:.8rem;margin:1.25rem 0 .75rem;color:var(--muted)">NEWSLETTER PLATFORMS (ALL FREE TIER)</h3>
+  <table class="tbl">
+    <thead><tr><th>Platform</th><th>Role</th><th>Free Limit</th><th>Setup</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Beehiiv</strong></td><td>Primary — Navigation Brief newsletter</td><td>2,500 subscribers</td><td>beehiiv.com → custom domain: newsletter.enil.co.za</td></tr>
+      <tr><td><strong>Substack</strong></td><td>Mirror + SEO signal</td><td>Unlimited</td><td>Auto-import from Beehiiv via RSS</td></tr>
+      <tr><td><strong>WhatsApp Business</strong></td><td>Hyper-local channels (Springs / Germiston / KP)</td><td>Free app</td><td>3 separate broadcast channels</td></tr>
+      <tr><td><strong>Google Search Console</strong></td><td>SEO monitoring</td><td>Free</td><td>search.google.com/search-console → Add enil.co.za</td></tr>
+    </tbody>
+  </table>
+</div><!-- /env -->
+
+<!-- ══ 03 PIPELINE ══ -->
+<div class="section" id="pipeline">
+  <div class="sec-header">
+    <span class="sec-num">03 //</span>
+    <h2 class="sec-title">Pipeline Configuration</h2>
+  </div>
+
+  <div class="callout cl-ok">
+    <strong>Day-1 Operation</strong>
+    The pipeline ships with seeded 2024/2025 baseline data. It is operational on first run — no PDFs need to be downloaded. Progressive automation then augments the seeded data over time.
+  </div>
+
+  <div class="code-block">
+    <div class="code-top"><span class="code-lang">bash — First run (produces all output files)</span><button class="copy" onclick="cp(this)">Copy</button></div>
+    <pre>cd enil-data
+python pipeline/pipeline.py --source all
+
+<span class="cm"># Expected output:</span>
+<span class="cg">✅ DBE: 20 records extracted</span>
+<span class="cg">✅ NSFAS: 6 states saved, portal checked</span>
+<span class="cg">✅ APS: 20 programmes saved (seeded baseline)</span>
+<span class="cg">✅ Labour: 18 vacancies + demand gap table (15 occupations)</span>
+<span class="cg">✅ Validation: 64 records OK, 0 errors</span>
+
+<span class="cm"># View the gap table (the killer asset):</span>
+python pipeline/scrapers/labour_scraper.py</pre>
+  </div>
+
+  <h3 style="font-family:var(--mono);font-size:.8rem;margin:1.25rem 0 .75rem;color:var(--muted)">PIPELINE DATA FLOW</h3>
+  <div class="card">
+    <div style="font-family:var(--mono);font-size:.73rem;line-height:2.1;color:var(--muted)">
+      <div><span style="color:var(--accent)">INGEST</span>    →  Playwright bots watch DBE press releases + NSFAS circulars page (24h cron)</div>
+      <div style="padding-left:1rem;color:var(--border)">↓</div>
+      <div><span style="color:var(--gold)">CLASSIFY</span>   →  scikit-learn TF-IDF: MatricReport | APSBooklet | NSFASPolicy | LabourData</div>
+      <div style="padding-left:1rem;color:var(--border)">↓</div>
+      <div><span style="color:var(--blue)">EXTRACT</span>    →  pdfplumber (tables) · PyMuPDF (prose) · Tesseract (scanned legacy docs)</div>
+      <div style="padding-left:1rem;color:var(--border)">↓</div>
+      <div><span style="color:var(--green)">VALIDATE</span>   →  Pydantic models flag missing fields (e.g. missing APS score)</div>
+      <div style="padding-left:1rem;color:var(--border)">↓</div>
+      <div><span style="color:var(--muted)">STORE</span>      →  Flat JSON/CSV committed to enil-data (private)</div>
+      <div style="padding-left:1rem;color:var(--border)">↓</div>
+      <div><span style="color:var(--accent)">PUBLISH</span>   →  GitHub Actions copies validated data to enil-site → Pages auto-deploys</div>
+    </div>
+  </div>
+</div><!-- /pipeline -->
+
+<!-- ══ 04 SITE ══ -->
+<div class="section" id="site">
+  <div class="sec-header">
+    <span class="sec-num">04 //</span>
+    <h2 class="sec-title">Site Deployment</h2>
+  </div>
+
+  <h3 style="font-family:var(--mono);font-size:.8rem;margin-bottom:.75rem;color:var(--muted)">SITE ARCHITECTURE (FLAT FILE — ZERO BACKEND)</h3>
+  <table class="tbl">
+    <thead><tr><th>URL Path</th><th>Content</th><th>SEO Target Keyword</th><th>Monthly Vol</th></tr></thead>
+    <tbody>
+      <tr><td><code style="font-family:var(--mono);font-size:.75rem">/</code></td><td>Homepage — monthly crisis alerts</td><td>ENIL education navigation</td><td>—</td></tr>
+      <tr><td><code style="font-family:var(--mono);font-size:.75rem">/aps-calculator/</code></td><td>JavaScript APS calculator (zero backend)</td><td>APS score requirements 2025</td><td>6–10k</td></tr>
+      <tr><td><code style="font-family:var(--mono);font-size:.75rem">/credential-trap/</code></td><td>Subject combo guides (1 page per combo)</td><td>matric subject choice grade 10</td><td>3–5k</td></tr>
+      <tr><td><code style="font-family:var(--mono);font-size:.75rem">/nsfas/</code></td><td>State machine pages + templates</td><td>NSFAS appeals 2025 how to</td><td>8–12k</td></tr>
+      <tr><td><code style="font-family:var(--mono);font-size:.75rem">/ekurhuleni-map/</code></td><td>TVET-vacancy gap table</td><td>TVET Ekurhuleni engineering courses</td><td>800–1.2k</td></tr>
+      <tr><td><code style="font-family:var(--mono);font-size:.75rem">/data/</code></td><td>Raw CSV downloads — generates inbound links</td><td>SA education data download</td><td>—</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout cl-info">
+    <strong>Technical SEO Implementation</strong>
+    Every page: unique &lt;title&gt; + &lt;meta description&gt; targeting one keyword cluster · Schema.org FAQPage markup for rich snippets · Breadcrumb navigation for internal link distribution · Sitemap.xml auto-generated by Actions on every commit · All pages &lt;50KB static HTML — Core Web Vitals excellent.
+  </div>
+</div><!-- /site -->
+
+<!-- ══ 05 SECRETS ══ -->
+<div class="section" id="secrets">
+  <div class="sec-header">
+    <span class="sec-num">05 //</span>
+    <h2 class="sec-title">Secrets Reference</h2>
+  </div>
+  <div class="code-block">
+    <div class="code-top"><span class="code-lang">GitHub Secrets — add to BOTH repos via Settings → Secrets → Actions</span></div>
+    <pre><span class="cv">ENIL_DATA_TOKEN</span>    PAT with repo + workflow scope → access enil-data from enil-site workflows
+<span class="cv">ENIL_SITE_TOKEN</span>    PAT with repo + workflow scope → trigger site rebuild from data pipeline
+<span class="cv">NSFAS_ALERT_EMAIL</span>  Your email for pipeline failure notifications
+<span class="cv">BEEHIIV_API_KEY</span>    From beehiiv.com → Settings → API (when newsletter configured)
+<span class="cv">ALERT_WEBHOOK</span>      Slack/Discord/email webhook for NSFAS portal-down alerts (optional)
+<span class="cv">GSC_API_KEY</span>        Google Search Console API (month 2 — SEO monitoring)
+<span class="cv">TWILIO_SID</span>         Twilio WhatsApp API (when automating community alerts, optional)</pre>
+  </div>
+  <div class="callout cl-warn">
+    <strong>PAT Generation</strong>
+    github.com → Settings → Developer settings → Personal access tokens → Tokens (classic) → Generate new token. Scopes: <code style="font-family:var(--mono)">repo</code> (full) + <code style="font-family:var(--mono)">workflow</code>. Set expiry to 1 year and add a reminder to rotate it.
+  </div>
+</div>
+
+<!-- ══ 06 WEEKLY LOOP ══ -->
+<div class="section" id="weekly">
+  <div class="sec-header">
+    <span class="sec-num">06 //</span>
+    <h2 class="sec-title">Weekly Execution Loop</h2>
+  </div>
+
+  <div class="callout cl-insight">
+    "Every NSFAS crisis is a content event. Every DBE delay is a search spike. Every chaos event is a subscriber acquisition moment. The weekly loop converts system disorder into ENIL value."
+  </div>
+
+  <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin:1.25rem 0">
+    <div class="card" style="flex:1;min-width:140px;text-align:center">
+      <div style="font-size:1.5rem;margin-bottom:.4rem">📡</div>
+      <h3>INPUT</h3>
+      <p>New data events, crises, circulars, vacancy changes</p>
+    </div>
+    <div style="display:flex;align-items:center;color:var(--accent);font-size:1.2rem">→</div>
+    <div class="card" style="flex:1;min-width:140px;text-align:center">
+      <div style="font-size:1.5rem;margin-bottom:.4rem">⚙️</div>
+      <h3>PROCESS</h3>
+      <p>Extract → structure → validate → publish</p>
+    </div>
+    <div style="display:flex;align-items:center;color:var(--accent);font-size:1.2rem">→</div>
+    <div class="card" style="flex:1;min-width:140px;text-align:center">
+      <div style="font-size:1.5rem;margin-bottom:.4rem">📤</div>
+      <h3>OUTPUT</h3>
+      <p>Content, dataset updates, site pages, alerts</p>
+    </div>
+    <div style="display:flex;align-items:center;color:var(--accent);font-size:1.2rem">→</div>
+    <div class="card" style="flex:1;min-width:140px;text-align:center">
+      <div style="font-size:1.5rem;margin-bottom:.4rem">🔄</div>
+      <h3>FEEDBACK</h3>
+      <p>Traffic signals, user questions, system gaps</p>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-top"><span class="code-lang">bash — Run every Monday morning</span><button class="copy" onclick="cp(this)">Copy</button></div>
+    <pre>cd enil-data
+python weekly_orchestrator.py
+
+<span class="cm"># Produces: weekly_reports/YYYY-WNN.json + YYYY-WNN.md</span>
+<span class="cm"># Copies report to obsidian/04-Weekly-Logs/ automatically</span>
+<span class="cm"># Prints: intelligence brief, content queue, revenue pipeline, moat scores</span></pre>
+  </div>
+</div>
+
+<!-- ══ 07 NSFAS ══ -->
+<div class="section" id="nsfas">
+  <div class="sec-header">
+    <span class="sec-num">07 //</span>
+    <h2 class="sec-title">NSFAS State Machine</h2>
+  </div>
+
+  <table class="tbl">
+    <thead><tr><th>State</th><th>Period</th><th>Crisis Points</th><th>ENIL Action</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge b-gray">0 Pre-Application</span></td><td>Oct–Nov</td><td>Portal crashes at peak volume; deadline moved without notice</td><td>Publish checklist; alternative submission evidence template</td></tr>
+      <tr><td><span class="badge b-gray">1 Submitted/Pending</span></td><td>Nov–Jan</td><td>Reference numbers invalid; duplicate applications</td><td>Screenshot guide; reference number verification steps</td></tr>
+      <tr><td><span class="badge b-gold">2 Provisionally Funded</span></td><td>Jan–Feb</td><td>Conditions not clearly communicated; registration proof format rejected</td><td>Condition checklist by institution</td></tr>
+      <tr><td><span class="badge b-red">3 Appeals Window ←</span></td><td>Mar–May</td><td>Wrong rejection code; appeal portal broken; 30-day deadline missed</td><td>Appeals template library; rejection code lookup; turnaround tracker</td></tr>
+      <tr><td><span class="badge b-green">4 Disbursement Active</span></td><td>Feb–Nov</td><td>Allowance not deposited; tuition not paid to institution</td><td>Two-path resolution guide: allowance vs tuition disputes</td></tr>
+      <tr><td><span class="badge b-blue">5 Continuation</span></td><td>Sept–Oct</td><td>Pass threshold changed; supplementary results not updated</td><td>Institution-specific threshold table</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout cl-crit">
+    <strong>Talebian Principle in Action</strong>
+    State 3 (Appeals Window) is the most under-served, most chaotic, and highest-search-volume NSFAS state. Publishing plain-language appeal grounds by rejection code — <em>something NSFAS itself does not do clearly</em> — is ENIL's single highest-value content asset. Success rate with correct grounds: ~43%.
+  </div>
+</div><!-- /nsfas -->
+
+<!-- ══ 08 SEO ══ -->
+<div class="section" id="seo">
+  <div class="sec-header">
+    <span class="sec-num">08 //</span>
+    <h2 class="sec-title">SEO Engine</h2>
+  </div>
+  <div class="g2">
+    <div class="card red">
+      <h3>Target Cluster 1: NSFAS (8–12k/month)</h3>
+      <p><code style="font-family:var(--mono);font-size:.8em">NSFAS appeals 2025 how to</code><br>Page: /nsfas/appeals/ — Publish rejection code lookup + template downloads. This is a crisis query. Users are desperate. Content that solves it earns loyalty.</p>
+    </div>
+    <div class="card gold">
+      <h3>Target Cluster 2: APS (6–10k/month)</h3>
+      <p><code style="font-family:var(--mono);font-size:.8em">APS score requirements 2025</code><br>Page: /aps-calculator/ — Interactive calculator with zero backend. Instant value delivery, high dwell time, natural backlink magnet for school websites.</p>
+    </div>
+    <div class="card blue">
+      <h3>Target Cluster 3: Subject Choice (3–5k/month)</h3>
+      <p><code style="font-family:var(--mono);font-size:.8em">matric subject choice grade 10</code><br>Page: /credential-trap/ — One page per subject combination. Flat-file architecture indexable by Google. Auto-generated from schema.</p>
+    </div>
+    <div class="card green">
+      <h3>Target Cluster 4: TVET Ekurhuleni (800–1.2k/month)</h3>
+      <p><code style="font-family:var(--mono);font-size:.8em">TVET Ekurhuleni engineering courses</code><br>Page: /ekurhuleni-map/ — The gap table. <em>No publicly available version of this data exists.</em> It generates inbound links from researchers, recruiters, college principals.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 09 DISTRIBUTION ══ -->
+<div class="section" id="dist">
+  <div class="sec-header">
+    <span class="sec-num">09 //</span>
+    <h2 class="sec-title">Distribution Architecture</h2>
+  </div>
+  <table class="tbl">
+    <thead><tr><th>Layer</th><th>Platform</th><th>Role</th><th>Compounding Effect</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge b-red">Layer 1</span></td><td>GitHub Pages (enil.co.za)</td><td>Primary SEO asset. Source of truth.</td><td>Backlinks → domain authority → more organic traffic</td></tr>
+      <tr><td><span class="badge b-gold">Layer 2</span></td><td>Beehiiv + Substack mirror</td><td>Monthly Navigation Brief. Builds list.</td><td>Subscribers share → backlinks → more subscribers</td></tr>
+      <tr><td><span class="badge b-blue">Layer 3</span></td><td>WhatsApp (3 channels)</td><td>Hyper-local: Springs / Germiston / KP</td><td>Community trust → word-of-mouth → institutional B2B contacts</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout cl-ok">
+    <strong>The WhatsApp Moat</strong>
+    Trilingual (Zulu, Sotho, English) plain-language crisis alerts to community-specific channels. Google cannot replicate this. No national publication builds it for a single metro. This is the most defensible distribution channel ENIL has — and it costs nothing to operate.
+  </div>
+</div>
+
+<!-- ══ 10 B2B ══ -->
+<div class="section" id="b2b">
+  <div class="sec-header">
+    <span class="sec-num">10 //</span>
+    <h2 class="sec-title">B2B Revenue Pipeline</h2>
+  </div>
+
+  <div class="callout cl-insight">
+    "The constraint is non-negotiable: learners and parents never pay. This is not idealism — it is a strategic moat. The moment ENIL charges students, it becomes just another unaffordable service in a country where unaffordability is the product to be disrupted."
+  </div>
+
+  <table class="tbl">
+    <thead><tr><th>Path</th><th>Customer</th><th>Price</th><th>Year 1 Target</th><th>Margin</th></tr></thead>
+    <tbody>
+      <tr><td>B2B Data Licensing</td><td>SETAs + industrial recruiters</td><td>R8k–R15k/yr (SETA)<br>R3k–R6k/mo (recruiter)</td><td>R80k</td><td>~95%</td></tr>
+      <tr><td>Premium Briefs</td><td>Private schools + career advisors</td><td>R8k–R15k/yr (school)<br>R2.5k/yr (advisor)</td><td>R60k</td><td>~90%</td></tr>
+      <tr><td>TVET Dashboards</td><td>TVET colleges (6 in corridor)</td><td>R25k setup + R8k/yr</td><td>R75k setup + R24k</td><td>~85%</td></tr>
+    </tbody>
+  </table>
+
+  <div class="g3">
+    <div class="card red">
+      <h3>Priority 1: TVET Dashboards</h3>
+      <p>Highest unit economics. Springs + Ekurhuleni West + Ekurhuleni East = R75k setup + R24k/year. TVET principals want marketing assets that demonstrate graduate employment outcomes to DHET. ENIL solves this problem exactly.</p>
+    </div>
+    <div class="card gold">
+      <h3>Priority 2: SETA Contracts</h3>
+      <p>MERSETA + EWSETA need granular Ekurhuleni artisan gap data to justify learnership allocations. The demand gap table is the product. Draft proposal letters — the data speaks for itself.</p>
+    </div>
+    <div class="card blue">
+      <h3>Priority 3: Recruiter Monthly</h3>
+      <p>Scaw Metals (Springs), Rand Refinery (Germiston), OR Tambo logistics cluster. Monthly TVET graduate pipeline reports: which colleges, how many candidates, which programmes. 5 companies = R15k–R30k/month.</p>
+    </div>
+  </div>
+</div><!-- /b2b -->
+
+<!-- ══ 11 PRODUCTS ══ -->
+<div class="section" id="products">
+  <div class="sec-header">
+    <span class="sec-num">11 //</span>
+    <h2 class="sec-title">Product Specifications</h2>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-n">A</div>
+      <div class="step-body">
+        <div class="step-title">Product A: TVET Employment Outcomes Dashboard</div>
+        <div class="step-desc">A branded GitHub Pages microsite (college's own colours and logo) showing ENIL vacancy data filtered to their specific programmes. Auto-updated quarterly from the pipeline. College provides graduate employment survey data in exchange (feeds back into ENIL's schema). Price: <strong>R25,000 setup + R8,000/year maintenance.</strong> Production cost: 12–16h first edition; 2h quarterly. Margin: ~85%.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">B</div>
+      <div class="step-body">
+        <div class="step-title">Product B: B2B Data Intelligence Report (SETA/Metro)</div>
+        <div class="step-desc">Quarterly PDF report (20–30 pages): Ekurhuleni TVET output vs vacancy gap table, top 10 demand occupations with OFO codes, graduate pipeline forecast by programme, recommended learnership allocation priorities. Price: <strong>R8,000–R15,000 per organisation per year.</strong> Production: 4–6h per quarter (template-based). Margin: ~95%.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">C</div>
+      <div class="step-body">
+        <div class="step-title">Product C: Premium Navigation Brief (Private Schools)</div>
+        <div class="step-desc">Annual package: subject choice mapping for every CAPS combination at the school, annual Career Trajectory Deck for Grade 9 parent evening (school-branded), quarterly NSFAS + university deadline calendar. Price: <strong>R8,000–R15,000/year.</strong> Independent advisor licence: R2,500/year. Production: 8–12h first edition; 2–3h quarterly updates. Margin: ~90%.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 12 MOATS ══ -->
+<div class="section" id="moats">
+  <div class="sec-header">
+    <span class="sec-num">12 //</span>
+    <h2 class="sec-title">Moat Assessment</h2>
+  </div>
+
+  <div class="g2">
+    <div>
+      <div class="moat">
+        <div class="moat-row"><span>Data Moat</span><span>6/10 → target 9/10 (Month 3)</span></div>
+        <div class="moat-track"><div class="moat-fill" style="width:60%;background:var(--accent)"></div></div>
+      </div>
+      <div class="moat">
+        <div class="moat-row"><span>Distribution Moat</span><span>2/10 → target 7/10 (Month 6)</span></div>
+        <div class="moat-track"><div class="moat-fill" style="width:20%;background:var(--blue)"></div></div>
+      </div>
+      <div class="moat">
+        <div class="moat-row"><span>Trust Moat</span><span>3/10 → target 8/10 (Year 1)</span></div>
+        <div class="moat-track"><div class="moat-fill" style="width:30%;background:var(--green)"></div></div>
+      </div>
+      <div class="moat">
+        <div class="moat-row"><span>Antifragility</span><span>7/10 — grows with every NSFAS crisis</span></div>
+        <div class="moat-track"><div class="moat-fill" style="width:70%;background:var(--gold)"></div></div>
+      </div>
+    </div>
+    <div class="card green">
+      <h3>Why Competitors Cannot Replicate</h3>
+      <p><strong>Data:</strong> The Ekurhuleni gap table requires cross-referencing 4 datasets that have never been combined publicly. Months of scraping/manual entry create a compounding lead.<br><br><strong>Distribution:</strong> Trilingual WhatsApp channels with community trust take years to build. No national publisher will do it for one metro.<br><br><strong>Trust:</strong> In a low-trust environment, the entity that is consistently accurate in plain language becomes the default. Trust compounds.</p>
+    </div>
+  </div>
+</div><!-- /moats -->
+
+<!-- ══ 13 FILES ══ -->
+<div class="section" id="files">
+  <div class="sec-header">
+    <span class="sec-num">13 //</span>
+    <h2 class="sec-title">File Manifest</h2>
+  </div>
+  <div class="code-block">
+    <div class="code-top"><span class="code-lang">enil-data/ repository structure</span></div>
+    <pre><span class="cg">enil-data/</span>
+├── <span class="ca">pipeline/</span>
+│   ├── schema.py              <span class="cm"># Pydantic master data models</span>
+│   ├── pipeline.py            <span class="cm"># Main orchestrator — run this</span>
+│   ├── scrapers/
+│   │   ├── dbe_scraper.py     <span class="cm"># DBE matric report monitor</span>
+│   │   ├── nsfas_monitor.py   <span class="cm"># NSFAS state machine + alerts</span>
+│   │   ├── aps_scraper.py     <span class="cm"># 26 university APS extractor</span>
+│   │   └── labour_scraper.py  <span class="cm"># Ekurhuleni vacancy gap table</span>
+│   ├── data/
+│   │   ├── dbe/               <span class="cm"># pass_rates.csv, subject_performance.csv</span>
+│   │   ├── nsfas/             <span class="cm"># alerts.json, state_machine.json</span>
+│   │   ├── aps/               <span class="cm"># aps_requirements.csv</span>
+│   │   └── labour/            <span class="cm"># demand_gap.json ← THE killer asset</span>
+│   └── runs/                  <span class="cm"># Pipeline run records (JSON)</span>
+├── <span class="ca">.github/workflows/</span>
+│   ├── data_monitor.yml       <span class="cm"># Daily extract → validate → commit</span>
+│   └── site_rebuild.yml       <span class="cm"># Triggered rebuild → GitHub Pages</span>
+├── <span class="ca">weekly_orchestrator.py</span>     <span class="cm"># Run every Monday — intelligence + revenue loop</span>
+├── requirements.txt
+├── weekly_reports/            <span class="cm"># YYYY-WNN.json + YYYY-WNN.md</span>
+├── obsidian/                  <span class="cm"># Obsidian vault operating system</span>
+└── revenue_pipeline.json      <span class="cm"># B2B prospect tracking</span>
+
+<span class="cg">enil-site/</span>
+├── site/
+│   ├── index.html             <span class="cm"># Homepage</span>
+│   ├── aps-calculator/index.html  <span class="cm"># APS Calculator tool</span>
+│   ├── nsfas/index.html       <span class="cm"># NSFAS state machine pages</span>
+│   ├── credential-trap/       <span class="cm"># Subject combo pages (auto-generated)</span>
+│   ├── ekurhuleni-map/        <span class="cm"># TVET gap table</span>
+│   ├── data/                  <span class="cm"># Raw CSV downloads</span>
+│   ├── sitemap.xml            <span class="cm"># Auto-generated by Actions</span>
+│   └── CNAME                  <span class="cm"># enil.co.za</span>
+└── .github/workflows/
+    └── site_rebuild.yml</pre>
+  </div>
+</div><!-- /files -->
+
+<!-- ══ 14 CRON ══ -->
+<div class="section" id="cron">
+  <div class="sec-header">
+    <span class="sec-num">14 //</span>
+    <h2 class="sec-title">Cron / Automation Schedule</h2>
+  </div>
+  <table class="tbl">
+    <thead><tr><th>Trigger</th><th>Time (SAST)</th><th>Workflow / Command</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge b-red">Daily</span></td><td>06:00 SAST</td><td>data_monitor.yml</td><td>Full pipeline run: DBE + NSFAS + APS + Labour → validate → commit → trigger site rebuild</td></tr>
+      <tr><td><span class="badge b-gold">Daily</span></td><td>06:10 SAST</td><td>site_rebuild.yml</td><td>Copy latest data → generate sitemap → deploy to GitHub Pages → ping GSC</td></tr>
+      <tr><td><span class="badge b-blue">Monday</span></td><td>Manual</td><td>weekly_orchestrator.py</td><td>Intelligence scan → content queue → revenue review → moat assessment → weekly report</td></tr>
+      <tr><td><span class="badge b-green">Sunday</span></td><td>07:00 SAST</td><td>site_rebuild.yml (cron)</td><td>Full site rebuild regardless of data changes — ensures freshness</td></tr>
+      <tr><td><span class="badge b-gray">Monthly</span></td><td>First Monday</td><td>Manual</td><td>Publish Beehiiv Navigation Brief → update Ekurhuleni map → advance B2B prospect</td></tr>
+    </tbody>
+  </table>
+</div><!-- /cron -->
+
+<!-- ══ THIELIAN CLOSE ══ -->
+<div class="section">
+  <div class="card" style="background:var(--ink);color:var(--paper);border:none;padding:2.5rem;border-radius:8px">
+    <h3 style="color:var(--accent);font-family:var(--mono);font-size:.75rem;letter-spacing:.1em;margin-bottom:1rem">THE THIELIAN SECRET</h3>
+    <p style="font-family:var(--serif);font-style:italic;font-size:1.1rem;line-height:1.8;color:#e0ddd4;max-width:680px">
+      "South Africa's credentialing system is not failing — it is succeeding at the wrong objective. It was designed to sort, not to educate. ENIL's competitive advantage is that it has decoded the sorting algorithm."
+    </p>
+    <p style="margin-top:1.5rem;color:#888;font-family:var(--mono);font-size:.72rem">
+      Build the decoder ring. The cipher will never be solved — the system has no incentive to become legible. That is your competitive advantage. That is your monopoly. That is your mission.
+    </p>
+  </div>
+</div>
+
+</div><!-- /content -->
+</main>
+</div><!-- /shell -->
+
+<script>
+// Copy button
+function cp(btn){
+  const pre = btn.closest('.code-block').querySelector('pre');
+  navigator.clipboard.writeText(pre.textContent.trim()).then(()=>{
+    btn.textContent='Copied!'; btn.classList.add('ok');
+    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('ok')},2000);
+  });
+}
+
+// Active sidebar link on scroll
+const sections = document.querySelectorAll('.section[id]');
+const links    = document.querySelectorAll('.sb-link');
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      links.forEach(l=>l.classList.remove('active'));
+      const match = document.querySelector(`.sb-link[href="#${e.target.id}"]`);
+      if(match) match.classList.add('active');
+    }
+  });
+},{threshold:0.3});
+sections.forEach(s=>io.observe(s));
+</script>
+</body>
+</html>
