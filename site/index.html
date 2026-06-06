@@ -1,1 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENIL — Education Navigation Intelligence Layer | South Africa</title>
+<meta name="description" content="ENIL decodes South Africa's opaque education system. Free APS calculator, NSFAS appeals guide, TVET pathways, and Ekurhuleni labour market intelligence for Grade 10–12 learners and parents.">
+<link rel="canonical" href="https://enil.co.za/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"ENIL Navigation Intelligence","url":"https://enil.co.za","description":"The decoder ring for South Africa's education system."}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0a0a08;--paper:#f2f0e8;--surface:#e8e5dc;--accent:#c8391a;--gold:#b8890f;--green:#1a6b32;--blue:#1a3f7a;--muted:#7a7868;--border:#d0cdc0;--mono:'IBM Plex Mono',monospace;--sans:'Syne',system-ui,sans-serif;--serif:'Libre Baskerville',Georgia,serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.6}
+nav{background:var(--ink);border-bottom:2px solid var(--accent);padding:.9rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.logo{font-family:var(--mono);font-weight:600;font-size:.95rem;letter-spacing:.2em;color:#fff}
+.logo em{color:var(--accent);font-style:normal}
+nav a{color:#888;text-decoration:none;font-family:var(--mono);font-size:.7rem;margin-left:1.25rem}
+nav a:hover{color:#fff}
+.hero{background:var(--ink);color:#fff;padding:5rem 1.5rem 4rem;border-bottom:3px solid var(--accent);position:relative;overflow:hidden}
+.hero::after{content:'ENIL';font-family:var(--serif);font-size:18rem;font-weight:700;opacity:.03;position:absolute;right:-3rem;bottom:-3rem;line-height:1;pointer-events:none}
+.hero-inner{max-width:800px;margin:0 auto}
+.hero-tag{display:inline-flex;align-items:center;gap:.5rem;border:1px solid rgba(200,57,26,.5);border-radius:3px;padding:.2rem .7rem;font-family:var(--mono);font-size:.65rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.25rem}
+h1{font-family:var(--serif);font-size:clamp(2.2rem,5vw,3.8rem);font-weight:700;line-height:1.1;max-width:700px}
+h1 em{color:var(--accent);font-style:italic}
+.hero-sub{color:#aaa;max-width:560px;margin:1.25rem 0 2rem;font-size:.95rem;line-height:1.85}
+.hero-ctas{display:flex;gap:1rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.8rem 1.5rem;border-radius:7px;font-weight:700;font-size:.88rem;text-decoration:none;transition:all .15s}
+.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:#a82d14}
+.btn-outline{border:1px solid #444;color:#ccc}.btn-outline:hover{border-color:#888;color:#fff}
+.container{max-width:860px;margin:0 auto;padding:0 1.5rem}
+.section{padding:3.5rem 0;border-top:1px solid var(--border)}
+.section:first-child{border-top:none}
+.section-label{font-family:var(--mono);font-size:.63rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);margin-bottom:.75rem}
+.section h2{font-family:var(--serif);font-size:1.75rem;font-weight:700;margin-bottom:1.25rem}
+.tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
+.tool{background:#fff;border:1px solid var(--border);border-radius:9px;padding:1.5rem;text-decoration:none;color:var(--ink);display:block;transition:all .15s;border-top:3px solid transparent}
+.tool:hover{box-shadow:0 4px 20px rgba(0,0,0,.1);transform:translateY(-2px)}
+.tool.red{border-top-color:var(--accent)}
+.tool.gold{border-top-color:var(--gold)}
+.tool.green{border-top-color:var(--green)}
+.tool.blue{border-top-color:var(--blue)}
+.tool .ico{font-size:1.5rem;margin-bottom:.75rem}
+.tool h3{font-weight:700;font-size:.95rem;margin-bottom:.5rem}
+.tool p{font-size:.82rem;color:var(--muted);line-height:1.75}
+.tool .arrow{font-family:var(--mono);font-size:.72rem;color:var(--accent);margin-top:.75rem}
+.insights{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.insight{background:#fff;border:1px solid var(--border);border-radius:8px;padding:1.25rem 1.5rem}
+.insight .num{font-family:var(--serif);font-size:2.5rem;font-weight:700;color:var(--accent);line-height:1}
+.insight .desc{font-size:.83rem;color:var(--muted);margin-top:.35rem;line-height:1.7}
+.quote{background:var(--ink);color:#fff;padding:3rem 1.5rem;margin:3rem 0 0;text-align:center}
+.quote blockquote{font-family:var(--serif);font-style:italic;font-size:1.15rem;max-width:680px;margin:0 auto;line-height:1.8;color:#ddd}
+.quote cite{display:block;margin-top:1rem;font-family:var(--mono);font-size:.68rem;color:#666;font-style:normal}
+footer{background:#111;color:#555;text-align:center;padding:1.75rem;font-family:var(--mono);font-size:.65rem}
+footer a{color:#777;text-decoration:none}
+@media(max-width:600px){.insights{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <span class="logo">E·<em>N</em>·I·L</span>
+  <div>
+    <a href="/aps-calculator/">APS Calculator</a>
+    <a href="/credential-trap/">Credential Trap</a>
+    <a href="/nsfas/">NSFAS</a>
+    <a href="/ekurhuleni-map/">Ekurhuleni Map</a>
+  </div>
+</nav>
 
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">📡 Ekurhuleni Beachhead Edition 2025</div>
+    <h1>The <em>Decoder Ring</em> for<br>SA's Education System</h1>
+    <p class="hero-sub">ENIL translates opaque government data into actionable navigation briefs for Grade 10–12 learners in Springs, Germiston, and Kempton Park. Free. Plain language. Ekurhuleni-specific.</p>
+    <div class="hero-ctas">
+      <a href="/aps-calculator/" class="btn btn-primary">Calculate My APS →</a>
+      <a href="/nsfas/" class="btn btn-outline">NSFAS Crisis Guide</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="section">
+    <div class="section-label">Navigation Tools</div>
+    <h2>Four Instruments. Zero Cost.</h2>
+    <div class="tools">
+      <a href="/aps-calculator/" class="tool red">
+        <div class="ico">📊</div>
+        <h3>APS Calculator</h3>
+        <p>Enter your matric marks. See which programmes you qualify for across all 26 SA universities, with NSFAS eligibility and Ekurhuleni demand signals.</p>
+        <div class="arrow">Calculate your score →</div>
+      </a>
+      <a href="/credential-trap/" class="tool gold">
+        <div class="ico">⚠️</div>
+        <h3>Credential Trap Detector</h3>
+        <p>Most learners are advised by teachers who optimise for pass rates, not employment. Check your subject combination against Classes A–D.</p>
+        <div class="arrow">Check your combination →</div>
+      </a>
+      <a href="/nsfas/" class="tool green">
+        <div class="ico">🧭</div>
+        <h3>NSFAS Chaos Translator</h3>
+        <p>NSFAS is systemically chaotic. Appeals are lost. Portals crash. ENIL documents the actual state of the process — not the theoretical one.</p>
+        <div class="arrow">Navigate the system →</div>
+      </a>
+      <a href="/ekurhuleni-map/" class="tool blue">
+        <div class="ico">🏭</div>
+        <h3>Ekurhuleni Labour Map</h3>
+        <p>The TVET output vs. vacancy gap table for Springs, Germiston, and Kempton Park. No publicly accessible version of this table exists anywhere else.</p>
+        <div class="arrow">View the gap table →</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">The Three Non-Obvious Truths</div>
+    <div class="insights">
+      <div class="insight">
+        <div class="num">R45k</div>
+        <div class="desc"><strong>Artisan monthly earnings at year 5</strong> vs R28k for BCom graduates in the same period. South Africa has a surplus of BCom graduates and a critical shortage of certified electricians, millwrights, and instrumentation technicians.</div>
+      </div>
+      <div class="insight">
+        <div class="num">75%</div>
+        <div class="desc"><strong>NSC graduates with no viable funded pathway.</strong> DBE issues 600,000+ matric certificates. Universities accept ~200,000. NSFAS can fund fewer than 150,000 without collapse. The overflow is structural, not temporary.</div>
+      </div>
+      <div class="insight">
+        <div class="num">~43%</div>
+        <div class="desc"><strong>NSFAS appeals success rate</strong> when the correct rejection code grounds are cited. Most appeals fail not on merit — but because the applicant doesn't know which grounds apply to their rejection code.</div>
+      </div>
+      <div class="insight">
+        <div class="num">#1</div>
+        <div class="desc"><strong>Most damaging single subject choice:</strong> Mathematical Literacy in Grade 9. It permanently forecloses all university engineering programmes AND all NATED N1-N3 artisan pathways — the highest-demand, highest-paying TVET route in Ekurhuleni.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Raw Data</div>
+    <h2>The Data is Free.</h2>
+    <p style="color:var(--muted);font-size:.88rem;margin-bottom:1rem">All ENIL datasets are freely downloadable. Researchers, journalists, and policy advocates are welcome to use and cite them. Attribution: ENIL Navigation Intelligence (enil.co.za).</p>
+    <a href="/data/" class="btn btn-primary">Download Datasets →</a>
+  </div>
+</div>
+
+<div class="quote">
+  <blockquote>"Build the decoder ring. The cipher will never be solved — the system has no incentive to become legible. That is your competitive advantage. That is your monopoly. That is your mission."</blockquote>
+  <cite>— ENIL Technical Blueprint v1.0</cite>
+</div>
+
+<footer>
+  <p>ENIL Navigation Intelligence | Ekurhuleni Beachhead Edition 2025 | <a href="/data/">Data</a> · <a href="/about/">About</a></p>
+  <p style="margin-top:.4rem">Learners and parents never pay. All monetisation is B2B and institutional.</p>
+</footer>
+</body>
+</html>
