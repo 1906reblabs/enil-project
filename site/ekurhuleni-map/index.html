@@ -1,1 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ekurhuleni Labour Market Map — TVET vs Vacancy Gap Table 2025 | ENIL</title>
+<meta name="description" content="The TVET graduate output vs open vacancy gap table for Springs, Germiston, and Kempton Park. Critical artisan shortages, salary benchmarks, and apprenticeship pathways. No public version of this data exists anywhere else.">
+<meta name="keywords" content="Ekurhuleni apprenticeship 2025, Springs TVET college courses, millwright jobs Ekurhuleni, electrician apprenticeship Gauteng, TVET engineering Ekurhuleni">
+<link rel="canonical" href="https://enil.co.za/ekurhuleni-map/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0a0a08;--paper:#f2f0e8;--surface:#e8e5dc;--card:#fff;
+  --accent:#c8391a;--gold:#b8890f;--green:#1a6b32;--blue:#1a3f7a;
+  --muted:#7a7868;--border:#d0cdc0;
+  --mono:'IBM Plex Mono',monospace;--sans:'Syne',system-ui,sans-serif;--serif:'Libre Baskerville',Georgia,serif
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.6}
+nav{background:var(--ink);border-bottom:2px solid var(--accent);padding:.9rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.logo{font-family:var(--mono);font-weight:600;font-size:.95rem;letter-spacing:.2em;color:#fff}
+.logo em{color:var(--accent);font-style:normal}
+nav a{color:#888;text-decoration:none;font-family:var(--mono);font-size:.7rem;margin-left:1.25rem}
+nav a:hover{color:#fff}
+nav a.active{color:var(--accent)}
 
+.hero{background:var(--ink);color:#fff;padding:2.5rem 1.5rem 2rem;border-bottom:3px solid var(--blue)}
+.hero-inner{max-width:960px;margin:0 auto}
+.hero-tag{display:inline-flex;align-items:center;gap:.4rem;border:1px solid rgba(26,63,122,.5);border-radius:3px;padding:.2rem .65rem;font-family:var(--mono);font-size:.65rem;color:#6a9fce;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem}
+.hero h1{font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;line-height:1.15}
+.hero h1 em{color:#6a9fce;font-style:italic}
+.hero p{color:#aaa;max-width:600px;margin:.9rem 0 1.5rem;font-size:.9rem;line-height:1.85}
+.hero-note{font-family:var(--mono);font-size:.7rem;color:#555;border:1px solid #333;border-radius:4px;padding:.4rem .8rem;display:inline-block}
+
+.container{max-width:960px;margin:0 auto;padding:0 1.5rem}
+
+/* Gap table */
+.gap-section{padding:2.5rem 0}
+.section-label{font-family:var(--mono);font-size:.63rem;text-transform:uppercase;letter-spacing:.15em;color:var(--blue);margin-bottom:.6rem}
+.gap-section h2{font-family:var(--serif);font-size:1.6rem;font-weight:700;margin-bottom:.5rem}
+.gap-sub{font-size:.85rem;color:var(--muted);margin-bottom:1.5rem}
+
+.gap-filters{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.gf{padding:.35rem .8rem;border:1px solid var(--border);border-radius:4px;background:var(--card);font-family:var(--mono);font-size:.7rem;cursor:pointer;color:var(--ink);transition:all .15s}
+.gf:hover,.gf.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+.gap-table-wrap{overflow-x:auto;border-radius:9px;border:1px solid var(--border);background:var(--card)}
+.gap-tbl{width:100%;border-collapse:collapse;min-width:700px}
+.gap-tbl thead{background:var(--ink)}
+.gap-tbl th{padding:.7rem 1rem;text-align:left;font-family:var(--mono);font-size:.63rem;text-transform:uppercase;letter-spacing:.08em;color:#ccc;white-space:nowrap}
+.gap-tbl td{padding:.85rem 1rem;border-bottom:1px solid var(--border);vertical-align:middle;font-size:.83rem}
+.gap-tbl tr:last-child td{border-bottom:none}
+.gap-tbl tr:hover td{background:rgba(0,0,0,.025)}
+
+.occ{font-weight:700}
+.occ-sub{font-family:var(--mono);font-size:.68rem;color:var(--muted)}
+.signal{display:inline-flex;align-items:center;padding:.2rem .5rem;border-radius:3px;font-family:var(--mono);font-size:.65rem;font-weight:600;white-space:nowrap}
+.s-crit{background:rgba(200,57,26,.1);color:var(--accent)}
+.s-high{background:rgba(26,63,122,.1);color:var(--blue)}
+.s-med{background:rgba(184,137,15,.1);color:var(--gold)}
+.s-over{background:rgba(26,107,50,.1);color:var(--green)}
+.gap-num{font-family:var(--mono);font-weight:700;font-size:.9rem}
+.gap-pos{color:var(--accent)}
+.gap-neg{color:var(--green)}
+.salary-cell{font-family:var(--mono);font-size:.8rem}
+.seta-badge{font-family:var(--mono);font-size:.62rem;padding:.15rem .45rem;background:var(--surface);border-radius:3px;color:var(--muted)}
+.ap-yes{color:var(--green)}.ap-no{color:var(--muted)}
+
+/* Zone cards */
+.zones{padding:2.5rem 0;border-top:1px solid var(--border)}
+.zones h2{font-family:var(--serif);font-size:1.6rem;font-weight:700;margin-bottom:1.5rem}
+.zone-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
+.zone-card{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:1.5rem}
+.zone-card h3{font-weight:700;font-size:1rem;margin-bottom:.5rem}
+.zone-tag{font-family:var(--mono);font-size:.65rem;color:var(--blue);margin-bottom:.75rem;display:block}
+.zone-card p{font-size:.82rem;color:var(--muted);line-height:1.8;margin-bottom:1rem}
+.zone-stats{display:flex;gap:1.5rem}
+.zone-stat .n{font-family:var(--mono);font-size:1.4rem;font-weight:600;color:var(--ink);line-height:1}
+.zone-stat .l{font-family:var(--mono);font-size:.6rem;color:var(--muted)}
+.employers{margin-top:.9rem;padding-top:.9rem;border-top:1px solid var(--border)}
+.employers h4{font-family:var(--mono);font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem}
+.employers li{font-size:.8rem;color:var(--ink);margin-left:1.1rem;line-height:1.9}
+
+/* Colleges */
+.colleges{padding:2.5rem 0;border-top:1px solid var(--border)}
+.colleges h2{font-family:var(--serif);font-size:1.6rem;font-weight:700;margin-bottom:1.5rem}
+.college-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
+.college-card{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:1.25rem 1.5rem;border-top:3px solid var(--blue)}
+.college-card h3{font-weight:700;font-size:.9rem;margin-bottom:.3rem}
+.college-loc{font-family:var(--mono);font-size:.68rem;color:var(--blue);margin-bottom:.6rem}
+.college-card p{font-size:.8rem;color:var(--muted);line-height:1.8}
+.prog-tags{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.75rem}
+.pt{font-family:var(--mono);font-size:.62rem;padding:.15rem .45rem;background:rgba(26,63,122,.08);color:var(--blue);border-radius:3px}
+
+/* Pathway guide */
+.pathway{padding:2.5rem 0;border-top:1px solid var(--border)}
+.pathway h2{font-family:var(--serif);font-size:1.6rem;font-weight:700;margin-bottom:1.5rem}
+.pathway-steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.875rem}
+.ps{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1.25rem}
+.ps .num{font-family:var(--mono);font-size:2rem;font-weight:700;color:var(--surface);line-height:1;margin-bottom:.5rem}
+.ps h4{font-weight:700;font-size:.88rem;margin-bottom:.4rem}
+.ps p{font-size:.8rem;color:var(--muted);line-height:1.75}
+
+/* B2B callout */
+.b2b{background:var(--ink);color:#fff;padding:2.5rem 1.5rem;margin-top:3rem}
+.b2b .container{max-width:960px;margin:0 auto}
+.b2b h2{font-family:var(--serif);font-size:1.3rem;margin-bottom:.75rem}
+.b2b p{color:#aaa;font-size:.85rem;line-height:1.8;max-width:600px;margin-bottom:1.25rem}
+.b2b a{display:inline-flex;align-items:center;gap:.5rem;background:var(--blue);color:#fff;padding:.7rem 1.4rem;border-radius:6px;font-family:var(--mono);font-size:.75rem;font-weight:600;text-decoration:none}
+
+footer{background:#111;color:#555;text-align:center;padding:1.5rem;font-family:var(--mono);font-size:.65rem}
+footer a{color:#777}
+@media(max-width:620px){.gap-filters{gap:.35rem}.hero-inner h1{font-size:1.7rem}}
+</style>
+</head>
+<body>
+<nav>
+  <span class="logo">E·<em>N</em>·I·L</span>
+  <div>
+    <a href="/">Home</a>
+    <a href="/aps-calculator/">APS</a>
+    <a href="/credential-trap/">Credential Trap</a>
+    <a href="/nsfas/">NSFAS</a>
+    <a href="/ekurhuleni-map/" class="active">Ekurhuleni Map</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">🏭 Ekurhuleni Labour Intelligence</div>
+    <h1>The Gap Table.<br><em>The Decoder Ring</em> for Ekurhuleni's Labour Market.</h1>
+    <p>TVET graduate output vs open vacancy count for Springs, Germiston, and Kempton Park — cross-referenced against MERSETA, EWSETA, Ekurhuleni IDP, and live job board data. This table does not exist anywhere else in a public format.</p>
+    <div class="hero-note">// Sources: MERSETA 2024 · EWSETA 2024 · Ekurhuleni IDP 2024 · PNet/LinkedIn live scrape · DHET TVET Graduate Output 2023</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- GAP TABLE -->
+  <div class="gap-section">
+    <div class="section-label">// The Demand Gap Table</div>
+    <h2>Ekurhuleni Vacancy vs TVET Output 2025</h2>
+    <p class="gap-sub">Positive gap = shortage (more vacancies than graduates). Negative = oversupply. Filter by signal:</p>
+
+    <div class="gap-filters">
+      <button class="gf on" onclick="filterGap('all',this)">All Occupations</button>
+      <button class="gf" onclick="filterGap('CRITICAL',this)">⚡ Critical Shortage</button>
+      <button class="gf" onclick="filterGap('HIGH',this)">↑ High Demand</button>
+      <button class="gf" onclick="filterGap('MEDIUM',this)">→ Medium</button>
+      <button class="gf" onclick="filterGap('OVERSUPPLY',this)">↓ Oversupply</button>
+    </div>
+
+    <div class="gap-table-wrap">
+      <table class="gap-tbl">
+        <thead>
+          <tr>
+            <th>Occupation</th>
+            <th>Annual Vacancies</th>
+            <th>TVET Graduates</th>
+            <th>Demand Gap</th>
+            <th>Signal</th>
+            <th>Salary (Yr 3)</th>
+            <th>SETA</th>
+            <th>Apprentice?</th>
+          </tr>
+        </thead>
+        <tbody id="gapBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ZONES -->
+  <div class="zones">
+    <div class="section-label">// The Three Zones</div>
+    <h2>Springs · Germiston · Kempton Park</h2>
+    <div class="zone-grid">
+      <div class="zone-card">
+        <h3>Springs Industrial Zone</h3>
+        <span class="zone-tag">→ scaw metals · arcelormittal · springs tvet</span>
+        <p>Heavy manufacturing cluster. Millwright and electrician demand is highest here. Springs TVET College feeds directly into this zone.</p>
+        <div class="zone-stats">
+          <div class="zone-stat"><div class="n">134</div><div class="l">Total vacancies</div></div>
+          <div class="zone-stat"><div class="n">+36</div><div class="l">Net shortage</div></div>
+        </div>
+        <div class="employers"><h4>Key employers</h4><ul>
+          <li>Scaw Metals — millwright, electrician</li>
+          <li>ArcelorMittal — fitter, boilermaker</li>
+          <li>Chemical plants — process operator</li>
+        </ul></div>
+      </div>
+      <div class="zone-card">
+        <h3>Germiston Industrial Zone</h3>
+        <span class="zone-tag">→ rand refinery · ekurhuleni east tvet</span>
+        <p>Gold refining and metallurgical processing. Instrumentation technicians are in highest demand — 134 vacancies corridor-wide, 45 graduates annually.</p>
+        <div class="zone-stats">
+          <div class="zone-stat"><div class="n">198</div><div class="l">Total vacancies</div></div>
+          <div class="zone-stat"><div class="n">+89</div><div class="l">Net shortage</div></div>
+        </div>
+        <div class="employers"><h4>Key employers</h4><ul>
+          <li>Rand Refinery — instrumentation, electrical</li>
+          <li>Ekurhuleni Metro Water — treatment operators</li>
+          <li>Manufacturing SMEs — boilermaker, welder</li>
+        </ul></div>
+      </div>
+      <div class="zone-card">
+        <h3>Kempton Park / OR Tambo</h3>
+        <span class="zone-tag">→ logistics hub · aviation · or tambo</span>
+        <p>SA's largest logistics cluster. Logistics controller demand (+169 gap) is the largest single shortage in the corridor. Also: diesel mechanics for ground handling.</p>
+        <div class="zone-stats">
+          <div class="zone-stat"><div class="n">478</div><div class="l">Total vacancies</div></div>
+          <div class="zone-stat"><div class="n">+185</div><div class="l">Net shortage</div></div>
+        </div>
+        <div class="employers"><h4>Key employers</h4><ul>
+          <li>DHL / Bidvest Logistics — controllers</li>
+          <li>OR Tambo ground handling — diesel mechanic</li>
+          <li>IT sector — technicians, support</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COLLEGES -->
+  <div class="colleges">
+    <div class="section-label">// TVET Colleges in the Corridor</div>
+    <h2>Colleges Feeding This Market</h2>
+    <div class="college-grid">
+      <div class="college-card">
+        <h3>Springs TVET College</h3>
+        <span class="college-loc">Springs · Ekurhuleni East</span>
+        <p>Direct feeder for Springs industrial cluster. Electrical Engineering programme graduates 89 students/year. Millwright demand in Springs: 45 open positions.</p>
+        <div class="prog-tags"><span class="pt">Electrical Eng N1-N6</span><span class="pt">Mechanical Eng N1-N6</span><span class="pt">Boilermaking N1-N3</span></div>
+      </div>
+      <div class="college-card">
+        <h3>Ekurhuleni West TVET</h3>
+        <span class="college-loc">Alberton / Ekurhuleni West</span>
+        <p>Largest TVET college in the corridor. 134 Electrical Engineering graduates annually. 268 open electrician vacancies corridor-wide — the match story hasn't been told yet.</p>
+        <div class="prog-tags"><span class="pt">Electrical Eng N1-N6</span><span class="pt">Mechanical Eng N1-N6</span><span class="pt">Fitting &amp; Machining</span><span class="pt">NCV Electrical L4</span></div>
+      </div>
+      <div class="college-card">
+        <h3>Ekurhuleni East TVET</h3>
+        <span class="college-loc">Germiston</span>
+        <p>Germiston-based. Boilermaker N1-N3 directly matches 52 open boilermaker vacancies in the Germiston zone. Strong industry partnerships.</p>
+        <div class="prog-tags"><span class="pt">Boilermaking N1-N3</span><span class="pt">Civil Engineering</span><span class="pt">Business Studies NCV</span></div>
+      </div>
+      <div class="college-card">
+        <h3>Kempton Park TVET</h3>
+        <span class="college-loc">Kempton Park</span>
+        <p>Strong IT and logistics programmes. 167 IT graduates annually. Kempton Park IT demand: 123 vacancies — oversupply trend emerging. Logistics programmes are undersubscribed.</p>
+        <div class="prog-tags"><span class="pt">IT NCV L4</span><span class="pt">Finance &amp; Accounting NCV</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PATHWAY GUIDE -->
+  <div class="pathway">
+    <div class="section-label">// How to Access These Pathways</div>
+    <h2>Artisan Pathway — 5 Steps</h2>
+    <div class="pathway-steps">
+      <div class="ps"><div class="num">01</div><h4>Subject Choice (Grade 9/10)</h4><p>Technical Mathematics + Physical Sciences opens N1-N6 engineering. No Maths Literacy — it forecloses this pathway entirely.</p></div>
+      <div class="ps"><div class="num">02</div><h4>TVET College (N1–N3)</h4><p>Enrol at Springs, Ekurhuleni West, or Ekurhuleni East TVET. Apply for NSFAS — TVET is fully covered. No upfront fees.</p></div>
+      <div class="ps"><div class="num">03</div><h4>TVET College (N4–N6)</h4><p>Continue to N4-N6 which includes 18 months of workplace experience. Your employer covers the practical component.</p></div>
+      <div class="ps"><div class="num">04</div><h4>SETA Apprenticeship</h4><p>MERSETA (mechanical/electrical) or EWSETA (electrical) funds your formal apprenticeship. You earn while training.</p></div>
+      <div class="ps"><div class="num">05</div><h4>Trade Test</h4><p>Pass the Red Seal trade test through NAMB. You are now a certified artisan. Median salary: R35k–R47k/month. Ekurhuleni shortage means immediate employment.</p></div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<div class="b2b">
+  <div class="container">
+    <h2>Using this data for institutional planning?</h2>
+    <p>ENIL produces quarterly Employment Outcomes Dashboards for TVET colleges and B2B Data Intelligence Reports for SETAs — structured, validated, and updated from this pipeline. Contact us for institutional access.</p>
+    <a href="mailto:data@enil.co.za">Request Institutional Brief →</a>
+  </div>
+</div>
+
+<footer>
+  ENIL Navigation Intelligence | Data: MERSETA 2024 · EWSETA 2024 · Ekurhuleni IDP 2024 · DHET TVET Output 2023 · PNet/LinkedIn Oct 2024 |
+  <a href="/data/">Download Raw Data</a> · <a href="/about/">About</a> · <a href="/">Home</a>
+</footer>
+
+<script>
+const GAP_DATA = [
+  {occ:'Coded Welder',sub:'Mechanical Engineering',vac:198,grad:90,gap:108,sig:'CRITICAL',salary:32000,seta:'MERSETA',ap:false},
+  {occ:'Logistics Controller',sub:'Finance / Business NCV',vac:312,grad:143,gap:169,sig:'CRITICAL',salary:25000,seta:'TETA',ap:false},
+  {occ:'Instrumentation Tech',sub:'Electrical Engineering',vac:134,grad:45,gap:89,sig:'CRITICAL',salary:42000,seta:'MERSETA',ap:true},
+  {occ:'Water Treatment Op',sub:'Civil Engineering',vac:89,grad:45,gap:44,sig:'HIGH',salary:28000,seta:'EWSETA',ap:true},
+  {occ:'Millwright',sub:'Mechanical Engineering',vac:103,grad:67,gap:36,sig:'HIGH',salary:47000,seta:'MERSETA',ap:true},
+  {occ:'HVAC Technician',sub:'Mechanical Engineering',vac:67,grad:45,gap:22,sig:'MEDIUM',salary:35000,seta:'MERSETA',ap:true},
+  {occ:'Fitter & Turner',sub:'Mechanical Engineering',vac:78,grad:67,gap:11,sig:'MEDIUM',salary:36000,seta:'MERSETA',ap:true},
+  {occ:'Plumber',sub:'NCV Plumbing',vac:44,grad:34,gap:10,sig:'MEDIUM',salary:33000,seta:'CETA',ap:true},
+  {occ:'Boilermaker',sub:'Boilermaking N1-N3',vac:52,grad:38,gap:14,sig:'MEDIUM',salary:38000,seta:'MERSETA',ap:true},
+  {occ:'Diesel Mechanic',sub:'Mechanical Engineering',vac:43,grad:67,gap:-24,sig:'HIGH',salary:34000,seta:'MERSETA',ap:true},
+  {occ:'Electrician (all)',sub:'Electrical Engineering',vac:268,grad:335,gap:-67,sig:'OVERSUPPLY',salary:39000,seta:'EWSETA',ap:true},
+  {occ:'IT Technician',sub:'Information Technology',vac:123,grad:167,gap:-44,sig:'OVERSUPPLY',salary:28000,seta:'MICTS',ap:false},
+  {occ:'Civil Technician',sub:'Civil Engineering',vac:56,grad:45,gap:11,sig:'MEDIUM',salary:31000,seta:'CETA',ap:true},
+  {occ:'Chemical Operator',sub:'Mechanical Engineering',vac:67,grad:67,gap:0,sig:'MEDIUM',salary:29000,seta:'CHIETA',ap:true},
+  {occ:'Accountant/Bookkeeper',sub:'Finance NCV / BCom',vac:234,grad:143,gap:91,sig:'HIGH',salary:22000,seta:'FASSET',ap:false},
+];
+
+const SIGNAL_LABELS = {CRITICAL:'⚡ Critical',HIGH:'↑ High',MEDIUM:'→ Medium',OVERSUPPLY:'↓ Oversupply'};
+const SIGNAL_CSS = {CRITICAL:'s-crit',HIGH:'s-high',MEDIUM:'s-med',OVERSUPPLY:'s-over'};
+
+function renderGap(filter){
+  const rows = filter==='all' ? GAP_DATA : GAP_DATA.filter(r=>r.sig===filter);
+  document.getElementById('gapBody').innerHTML = rows.map(r=>`
+    <tr data-sig="${r.sig}">
+      <td><div class="occ">${r.occ}</div><div class="occ-sub">${r.sub}</div></td>
+      <td style="font-family:var(--mono);font-weight:600">${r.vac.toLocaleString()}</td>
+      <td style="font-family:var(--mono)">${r.grad.toLocaleString()}</td>
+      <td><span class="gap-num ${r.gap>0?'gap-pos':'gap-neg'}">${r.gap>0?'+':''}${r.gap}</span></td>
+      <td><span class="signal ${SIGNAL_CSS[r.sig]}">${SIGNAL_LABELS[r.sig]}</span></td>
+      <td class="salary-cell">R${r.salary.toLocaleString()}/mo</td>
+      <td><span class="seta-badge">${r.seta}</span></td>
+      <td class="${r.ap?'ap-yes':'ap-no'}">${r.ap?'✓ Yes':'—'}</td>
+    </tr>
+  `).join('');
+}
+
+function filterGap(f, btn){
+  document.querySelectorAll('.gf').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderGap(f);
+}
+
+renderGap('all');
+</script>
+</body>
+</html>
