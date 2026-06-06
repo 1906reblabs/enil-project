@@ -1,1 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NSFAS Appeals 2025 — Guide, Templates & Rejection Codes | ENIL</title>
+<meta name="description" content="NSFAS appeals guide 2025. Rejection code lookup, appeal letter templates, and plain-language explainer for every NSFAS state. 43% appeal success rate when correct grounds are cited.">
+<meta name="keywords" content="NSFAS appeals 2025, NSFAS rejection codes, NSFAS appeal letter template, myNSFAS how to appeal">
+<link rel="canonical" href="https://enil.co.za/nsfas/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I appeal a NSFAS rejection?","acceptedAnswer":{"@type":"Answer","text":"Log in to myNSFAS, find your rejection letter with the rejection code (R01–R07), match it to the correct appeal grounds in ENIL's rejection code guide, download the relevant appeal letter template, attach supporting documents, and submit via the myNSFAS appeals portal within 30 days of rejection."}},{"@type":"Question","name":"What does NSFAS rejection code R07 mean?","acceptedAnswer":{"@type":"Answer","text":"R07 means your income could not be verified by NSFAS. Submit your SARS ITR12 tax return or a SASSA verification letter, then request a manual income assessment via the appeals portal. This is the most commonly mis-handled rejection code."}},{"@type":"Question","name":"What is the NSFAS appeal success rate?","acceptedAnswer":{"@type":"Answer","text":"Approximately 43% of NSFAS appeals succeed when the correct rejection code grounds are cited. Most appeals fail not on merit but because applicants don't know which specific grounds apply to their rejection code."}},{"@type":"Question","name":"How long does NSFAS take to process an appeal?","acceptedAnswer":{"@type":"Answer","text":"NSFAS is required to process appeals within 30 business days. In practice, responses often take 6–10 weeks. If you haven't received a response after 8 weeks, escalate via the NSFAS call centre (0800 067 327) with your appeal reference number."}}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0a0a08;--paper:#f2f0e8;--surface:#e8e5dc;--card:#fff;
+  --accent:#c8391a;--gold:#b8890f;--green:#1a6b32;--blue:#1a3f7a;
+  --muted:#7a7868;--border:#d0cdc0;
+  --mono:'IBM Plex Mono',monospace;--sans:'Syne',system-ui,sans-serif;--serif:'Libre Baskerville',Georgia,serif
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.6}
 
+nav{background:var(--ink);border-bottom:2px solid var(--accent);padding:.9rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.logo{font-family:var(--mono);font-weight:600;font-size:.95rem;letter-spacing:.2em;color:#fff}
+.logo em{color:var(--accent);font-style:normal}
+nav a{color:#888;text-decoration:none;font-family:var(--mono);font-size:.7rem;margin-left:1.25rem}
+nav a:hover{color:#fff}
+nav a.active{color:var(--accent)}
+
+/* Crisis banner */
+.crisis{background:var(--accent);color:#fff;padding:.65rem 1.5rem;font-family:var(--mono);font-size:.72rem;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.crisis strong{font-weight:700}
+.crisis .st{display:inline-flex;align-items:center;gap:.35rem;background:rgba(255,255,255,.15);border-radius:3px;padding:.15rem .5rem}
+
+.hero{background:var(--ink);color:#fff;padding:2.5rem 1.5rem 2rem;border-bottom:3px solid var(--accent)}
+.hero-inner{max-width:860px;margin:0 auto}
+.hero-tag{display:inline-flex;align-items:center;gap:.4rem;border:1px solid rgba(200,57,26,.5);border-radius:3px;padding:.2rem .65rem;font-family:var(--mono);font-size:.65rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem}
+.hero h1{font-family:var(--serif);font-size:clamp(1.8rem,4vw,3rem);font-weight:700;line-height:1.15}
+.hero h1 em{color:var(--accent);font-style:italic}
+.hero p{color:#aaa;max-width:560px;margin:.9rem 0 1.5rem;font-size:.9rem;line-height:1.85}
+
+.hero-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-top:1.5rem;max-width:600px}
+.stat .val{font-family:var(--mono);font-size:2rem;font-weight:600;color:var(--accent);line-height:1}
+.stat .lbl{font-family:var(--mono);font-size:.63rem;color:#888;text-transform:uppercase;letter-spacing:.1em;margin-top:.25rem}
+
+.container{max-width:860px;margin:0 auto;padding:0 1.5rem}
+
+/* State machine */
+.states{padding:2.5rem 0}
+.states h2{font-family:var(--serif);font-size:1.6rem;font-weight:700;margin-bottom:.5rem}
+.states .sub{font-size:.85rem;color:var(--muted);margin-bottom:1.75rem}
+
+.state-grid{display:flex;flex-direction:column;gap:.5rem}
+.state-item{
+  border:1px solid var(--border);border-radius:8px;background:var(--card);
+  overflow:hidden;cursor:pointer;transition:box-shadow .2s
+}
+.state-item:hover{box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.state-head{display:flex;align-items:center;gap:1rem;padding:.9rem 1.25rem}
+.state-num{
+  width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:.8rem;font-weight:700;flex-shrink:0;
+  background:var(--surface);color:var(--muted)
+}
+.state-item.active .state-num{background:var(--accent);color:#fff}
+.state-info{flex:1}
+.state-info .label{font-weight:700;font-size:.88rem}
+.state-info .period{font-family:var(--mono);font-size:.68rem;color:var(--muted)}
+.state-badge{font-family:var(--mono);font-size:.65rem;padding:.2rem .5rem;border-radius:3px;flex-shrink:0}
+.b-active{background:rgba(200,57,26,.1);color:var(--accent);border:1px solid rgba(200,57,26,.2)}
+.b-watch{background:rgba(184,137,15,.1);color:var(--gold);border:1px solid rgba(184,137,15,.2)}
+.b-done{background:rgba(26,107,50,.1);color:var(--green);border:1px solid rgba(26,107,50,.2)}
+.b-idle{background:var(--surface);color:var(--muted)}
+.state-body{padding:0 1.25rem 1.25rem;display:none;border-top:1px solid var(--border)}
+.state-body.open{display:block}
+.state-body p{font-size:.85rem;color:var(--muted);margin-top:.9rem;line-height:1.8}
+.docs-req{margin-top:.9rem}
+.docs-req h4{font-family:var(--mono);font-size:.7rem;font-weight:600;color:var(--ink);margin-bottom:.5rem;letter-spacing:.05em}
+.docs-req li{font-size:.83rem;color:var(--muted);margin-left:1.25rem;line-height:1.9}
+.state-action{
+  display:inline-flex;align-items:center;gap:.5rem;margin-top:1rem;
+  background:var(--ink);color:#fff;padding:.6rem 1.1rem;border-radius:6px;
+  font-family:var(--mono);font-size:.72rem;font-weight:600;text-decoration:none
+}
+
+/* Rejection code table */
+.rej-section{padding:2.5rem 0;border-top:1px solid var(--border)}
+.section-label{font-family:var(--mono);font-size:.63rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);margin-bottom:.6rem}
+.rej-section h2{font-family:var(--serif);font-size:1.6rem;font-weight:700;margin-bottom:1.5rem}
+.rej-note{background:rgba(200,57,26,.04);border:1px solid rgba(200,57,26,.15);border-radius:8px;padding:1rem 1.25rem;margin-bottom:1.5rem;font-size:.83rem;color:#5a2a1a;line-height:1.8}
+
+.rej-table{width:100%;border-collapse:collapse}
+.rej-table th{text-align:left;padding:.6rem .9rem;background:var(--ink);color:#fff;font-family:var(--mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.08em}
+.rej-table td{padding:.8rem .9rem;border-bottom:1px solid var(--border);font-size:.83rem;vertical-align:top}
+.rej-table tr:last-child td{border-bottom:none}
+.rej-table tr:hover td{background:rgba(0,0,0,.02)}
+.code{font-family:var(--mono);font-weight:700;color:var(--accent);font-size:.85rem}
+.rej-table td:nth-child(3){color:var(--blue);font-family:var(--mono);font-size:.76rem;line-height:1.7}
+
+/* Templates section */
+.tpl-section{padding:2.5rem 0;border-top:1px solid var(--border)}
+.tpl-section h2{font-family:var(--serif);font-size:1.6rem;font-weight:700;margin-bottom:1.5rem}
+.tpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
+.tpl-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1.25rem 1.5rem;border-left:3px solid var(--accent)}
+.tpl-card h3{font-weight:700;font-size:.9rem;margin-bottom:.5rem}
+.tpl-card p{font-size:.82rem;color:var(--muted);line-height:1.75;margin-bottom:1rem}
+.tpl-card .tag{font-family:var(--mono);font-size:.65rem;background:rgba(200,57,26,.08);color:var(--accent);padding:.15rem .45rem;border-radius:3px}
+
+/* Appeal letter */
+.letter-section{padding:2.5rem 0;border-top:1px solid var(--border)}
+.letter-section h2{font-family:var(--serif);font-size:1.6rem;font-weight:700;margin-bottom:1.5rem}
+.letter-box{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.letter-head{background:var(--surface);padding:.8rem 1.25rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.letter-head span{font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.copy-btn{background:var(--ink);color:#fff;border:none;border-radius:4px;padding:.35rem .75rem;font-family:var(--mono);font-size:.65rem;cursor:pointer;transition:background .15s}
+.copy-btn:hover{background:var(--accent)}
+.copy-btn.ok{background:var(--green)}
+.letter-body{padding:1.5rem;font-family:var(--mono);font-size:.78rem;line-height:2;white-space:pre-wrap;color:var(--ink)}
+.letter-body .ph{color:var(--accent);font-weight:600}
+
+/* Contact */
+.contact-section{background:var(--ink);color:#fff;padding:2.5rem 1.5rem;margin-top:3rem}
+.contact-section .container{max-width:860px;margin:0 auto}
+.contact-section h2{font-family:var(--serif);font-size:1.4rem;margin-bottom:1.25rem}
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem}
+.contact-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:1rem 1.25rem}
+.contact-card .ct{font-family:var(--mono);font-size:.65rem;color:#888;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.35rem}
+.contact-card .cv{font-family:var(--mono);font-size:.8rem;color:#e0ddd4}
+
+footer{background:#111;color:#555;text-align:center;padding:1.5rem;font-family:var(--mono);font-size:.65rem}
+footer a{color:#777}
+
+@media(max-width:600px){
+  .hero-stats{grid-template-columns:1fr 1fr}
+  .rej-table{font-size:.75rem}
+  .rej-table td{padding:.6rem .7rem}
+}
+</style>
+</head>
+<body>
+<nav>
+  <span class="logo">E·<em>N</em>·I·L</span>
+  <div>
+    <a href="/">Home</a>
+    <a href="/aps-calculator/">APS</a>
+    <a href="/credential-trap/">Credential Trap</a>
+    <a href="/nsfas/" class="active">NSFAS</a>
+    <a href="/ekurhuleni-map/">Ekurhuleni Map</a>
+  </div>
+</nav>
+
+<div class="crisis">
+  <strong>⚡ CURRENT NSFAS STATE:</strong>
+  <span class="st" id="currentStateBadge">Loading...</span>
+  <span>— Check the state guide below and take action now.</span>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">🧭 NSFAS Chaos Translator</div>
+    <h1>The State You're In<br><em>Actually Matters.</em></h1>
+    <p>NSFAS is not one process — it is a six-state machine. Most learners fail because they apply the wrong action to the wrong state. This guide gives you the exact action for your current state, plus the rejection code grounds that win appeals.</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="val">~43%</div><div class="lbl">Appeal success rate with correct grounds</div></div>
+      <div class="stat"><div class="val">R07</div><div class="lbl">Most mis-handled rejection code</div></div>
+      <div class="stat"><div class="val">30d</div><div class="lbl">Appeal window — don't miss it</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- STATE MACHINE -->
+  <div class="states">
+    <h2>The Six NSFAS States</h2>
+    <p class="sub">Every applicant is in one of these states. Find yours — then follow the exact action for that state.</p>
+
+    <div class="state-grid">
+      <div class="state-item" onclick="toggleState(this)">
+        <div class="state-head">
+          <div class="state-num">0</div>
+          <div class="state-info"><div class="label">Pre-Application</div><div class="period">October – November</div></div>
+          <span class="state-badge b-watch">DEADLINE CRITICAL</span>
+        </div>
+        <div class="state-body">
+          <p>The myNSFAS portal opens for new applications. This window closes — missing it means waiting an entire year. The portal is most unstable during peak submission days.</p>
+          <div class="docs-req"><h4>DOCUMENTS REQUIRED</h4><ul>
+            <li>Certified ID (not older than 3 months)</li>
+            <li>Proof of income — SASSA letter, payslips, or sworn affidavit</li>
+            <li>Institutional application confirmation number</li>
+          </ul></div>
+          <div style="margin-top:1rem;font-family:var(--mono);font-size:.75rem;color:var(--muted)">⚠️ If the portal crashes: screenshot your reference number. Do NOT resubmit — duplicates are rejected with code R06.</div>
+        </div>
+      </div>
+
+      <div class="state-item" onclick="toggleState(this)">
+        <div class="state-head">
+          <div class="state-num">1</div>
+          <div class="state-info"><div class="label">Submitted / Pending</div><div class="period">November – January</div></div>
+          <span class="state-badge b-idle">WAITING</span>
+        </div>
+        <div class="state-body">
+          <p>Your application is submitted. NSFAS is processing. The portal is under extreme load. This is a passive state — your only task is to keep your reference number safe and monitor weekly.</p>
+          <div class="docs-req"><h4>WHAT TO DO</h4><ul>
+            <li>Save your submission confirmation screenshot</li>
+            <li>Note your reference number in a safe place</li>
+            <li>Check portal weekly — do NOT check daily (adds load)</li>
+            <li>Do not resubmit under any circumstances</li>
+          </ul></div>
+        </div>
+      </div>
+
+      <div class="state-item" onclick="toggleState(this)">
+        <div class="state-head">
+          <div class="state-num">2</div>
+          <div class="state-info"><div class="label">Provisionally Funded</div><div class="period">January – February</div></div>
+          <span class="state-badge b-watch">ACTION REQUIRED</span>
+        </div>
+        <div class="state-body">
+          <p>NSFAS has approved you conditionally. Conditions are often not clearly communicated. Read every notification carefully — missing a condition submission converts this to a rejection.</p>
+          <div class="docs-req"><h4>COMMON CONDITIONS</h4><ul>
+            <li>Proof of registration at your institution</li>
+            <li>Academic record (returning students only)</li>
+            <li>Updated income documents if threshold changed</li>
+          </ul></div>
+        </div>
+      </div>
+
+      <div class="state-item active" onclick="toggleState(this)">
+        <div class="state-head">
+          <div class="state-num">3</div>
+          <div class="state-info"><div class="label">Appeals Window ← MOST CRITICAL</div><div class="period">March – May</div></div>
+          <span class="state-badge b-active">HIGHEST STAKES</span>
+        </div>
+        <div class="state-body open">
+          <p>You have received a rejection. The 30-day appeal window is now open. The single most important action: identify your rejection code (R01–R07) and cite the correct appeal grounds. See the rejection code table below.</p>
+          <div class="docs-req"><h4>APPEAL PROCESS — EXACTLY</h4><ul>
+            <li>Step 1: Get your rejection letter from myNSFAS — note the code (R01–R07)</li>
+            <li>Step 2: Match the code to the correct grounds in the table below</li>
+            <li>Step 3: Download the appeal letter template — fill in your specific details</li>
+            <li>Step 4: Attach supporting documents (listed per code below)</li>
+            <li>Step 5: Submit via myNSFAS appeals portal within 30 days of rejection date</li>
+          </ul></div>
+          <div style="margin-top:1rem;font-family:var(--mono);font-size:.75rem;color:var(--green)">✓ ~43% of correctly-grounded appeals succeed. Most failures are procedural, not factual.</div>
+        </div>
+      </div>
+
+      <div class="state-item" onclick="toggleState(this)">
+        <div class="state-head">
+          <div class="state-num">4</div>
+          <div class="state-info"><div class="label">Disbursement Active</div><div class="period">February – November</div></div>
+          <span class="state-badge b-done">FUNDED</span>
+        </div>
+        <div class="state-body">
+          <p>Funds are flowing. Allowance disputes and tuition disputes have different resolution paths. Using the wrong path doubles your waiting time.</p>
+          <div class="docs-req"><h4>TWO DISTINCT DISPUTE PATHS</h4><ul>
+            <li><strong>Allowance not received:</strong> Call 0800 067 327 → wait 7 business days → escalate to institution financial aid</li>
+            <li><strong>Tuition not paid:</strong> Contact institution financial aid office → they escalate directly to NSFAS (you cannot do this yourself)</li>
+            <li>Never use the allowance path for tuition disputes — it creates a circular referral</li>
+          </ul></div>
+        </div>
+      </div>
+
+      <div class="state-item" onclick="toggleState(this)">
+        <div class="state-head">
+          <div class="state-num">5</div>
+          <div class="state-info"><div class="label">Continuation (Year 2+)</div><div class="period">September – October</div></div>
+          <span class="state-badge b-watch">RENEWAL REQUIRED</span>
+        </div>
+        <div class="state-body">
+          <p>You must reapply each year. Academic progress thresholds vary by institution. Missing your institution's threshold — even by one module — triggers a rejection.</p>
+          <div class="docs-req"><h4>THRESHOLDS (2025)</h4><ul>
+            <li>Universities: pass at least 50% of registered modules per year</li>
+            <li>TVET colleges: pass at least 60% of subjects per level</li>
+            <li>Supplementary exams count — but results must be loaded before the renewal deadline</li>
+          </ul></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REJECTION CODES -->
+  <div class="rej-section">
+    <div class="section-label">// Rejection Code Lookup</div>
+    <h2>The Seven Rejection Codes</h2>
+    <div class="rej-note">
+      ⚠️ Most appeals fail because applicants cite generic grounds ("I was unfairly rejected") instead of the specific grounds that apply to their code. The table below gives you the exact grounds NSFAS's own appeals adjudicators look for.
+    </div>
+    <table class="rej-table">
+      <thead>
+        <tr><th>Code</th><th>Official Reason</th><th>Correct Appeal Grounds + Documents</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="code">R01</div></td>
+          <td>Income exceeds threshold</td>
+          <td>Submit updated SARS ITR12 or sworn affidavit of changed income. Request formal financial re-assessment citing Section 5 of the NSFAS Act. Include any new unemployment / retrenchment documentation.</td>
+        </tr>
+        <tr>
+          <td><div class="code">R02</div></td>
+          <td>Not SA citizen or permanent resident</td>
+          <td>Submit certified SA ID (green ID book or smart card) + unabridged birth certificate. If you have a Section 22 permit, include certified copy. Appeals on citizenship grounds require DIRCO verification.</td>
+        </tr>
+        <tr>
+          <td><div class="code">R03</div></td>
+          <td>Already receiving another bursary</td>
+          <td>Submit a letter from the bursary provider confirming it covers only partial costs (not full cost of study). Specify which costs it covers and what gap remains. NSFAS may co-fund the uncovered portion.</td>
+        </tr>
+        <tr>
+          <td><div class="code">R04</div></td>
+          <td>Academic record insufficient</td>
+          <td>Submit certified official transcript. If fail was due to death, illness, or crisis — submit compassionate grounds letter with supporting documentation (death certificate, hospital letter, etc.). Academic advisor statement helps.</td>
+        </tr>
+        <tr>
+          <td><div class="code">R05</div></td>
+          <td>Programme not on NSFAS-funded list</td>
+          <td>Check the DHET-approved list of funded qualifications at dhet.gov.za. Ask your institution to re-register the programme if it qualifies. Submit confirmation from the institution that the programme is being registered.</td>
+        </tr>
+        <tr>
+          <td><div class="code">R06</div></td>
+          <td>Duplicate application detected</td>
+          <td>Submit written confirmation from NSFAS of which application is active. Request deactivation of the duplicate via the call centre (0800 067 327) and get a reference number for the deactivation request. Include both reference numbers in your appeal.</td>
+        </tr>
+        <tr>
+          <td><div class="code" style="color:var(--gold)">R07 ★</div></td>
+          <td>Income not verified by SARS / SASSA</td>
+          <td>This is the most commonly mishandled code. Submit your SARS ITR12 tax return or a SASSA grant verification letter. If neither is available — submit a sworn affidavit from a commissioner of oaths (free at most police stations). Request a manual income assessment in your appeal letter.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- APPEAL LETTER TEMPLATE -->
+  <div class="letter-section">
+    <div class="section-label">// Appeal Letter Template</div>
+    <h2>Standard Appeal Letter</h2>
+    <p style="color:var(--muted);font-size:.85rem;margin-bottom:1.25rem">Copy this letter and replace all <span style="color:var(--accent);font-family:var(--mono);">[BRACKETED]</span> sections with your actual information. The tone and structure are deliberate — do not change them.</p>
+    <div class="letter-box">
+      <div class="letter-head">
+        <span>NSFAS APPEAL LETTER — ENIL TEMPLATE v1.0</span>
+        <button class="copy-btn" id="copyBtn" onclick="copyLetter()">Copy Letter</button>
+      </div>
+      <div class="letter-body" id="letterContent"><span class="ph">[YOUR FULL NAME]</span>
+<span class="ph">[ID NUMBER]</span>
+<span class="ph">[PHONE NUMBER]</span>
+<span class="ph">[DATE]</span>
+
+The Appeals Committee
+National Student Financial Aid Scheme
+Private Bag X174, Pretoria, 0001
+
+Re: Appeal Against Rejection — Application Reference <span class="ph">[YOUR REFERENCE NUMBER]</span>
+Rejection Code: <span class="ph">[R01 / R02 / R03 / R04 / R05 / R06 / R07]</span>
+
+Dear Committee,
+
+I am writing to formally appeal the rejection of my NSFAS application for the <span class="ph">[YEAR]</span> academic year at <span class="ph">[INSTITUTION NAME]</span>, programme <span class="ph">[PROGRAMME NAME]</span>.
+
+My application was rejected with code <span class="ph">[CODE]</span>, which I understand refers to <span class="ph">[OFFICIAL REASON FROM TABLE ABOVE]</span>.
+
+I respectfully submit that this rejection should be reconsidered on the following grounds:
+
+<span class="ph">[INSERT SPECIFIC APPEAL GROUNDS FROM THE REJECTION CODE TABLE ABOVE — BE SPECIFIC AND FACTUAL. DO NOT USE GENERIC LANGUAGE.]</span>
+
+In support of this appeal, I attach the following documentation:
+1. <span class="ph">[DOCUMENT 1 — see required docs per code above]</span>
+2. <span class="ph">[DOCUMENT 2 if applicable]</span>
+3. <span class="ph">[DOCUMENT 3 if applicable]</span>
+
+I am a dependent of a household with a combined income of approximately R<span class="ph">[AMOUNT]</span> per year. Without NSFAS funding, I will be unable to continue my studies and complete a qualification that directly addresses the <span class="ph">[YOUR FIELD]</span> skills shortage in South Africa.
+
+I request a formal review of my application and ask that a response be provided within 30 business days as required by the NSFAS Act.
+
+Yours sincerely,
+<span class="ph">[SIGNATURE]</span>
+<span class="ph">[FULL NAME]</span>
+<span class="ph">[DATE]</span></div>
+    </div>
+  </div>
+
+  <!-- TEMPLATE CARDS -->
+  <div class="tpl-section" style="border-top:1px solid var(--border);padding:2.5rem 0">
+    <div class="section-label">// Resources</div>
+    <h2 style="font-family:var(--serif);font-size:1.6rem;font-weight:700;margin-bottom:1.5rem">Supporting Documents</h2>
+    <div class="tpl-grid">
+      <div class="tpl-card">
+        <h3>Income Proof Alternatives</h3>
+        <p>Not everyone has a payslip or SARS ITR12. Here are the accepted alternatives NSFAS adjudicators accept.</p>
+        <span class="tag">ALL STATES</span>
+      </div>
+      <div class="tpl-card" style="border-left-color:var(--blue)">
+        <h3>R07 Sworn Affidavit Format</h3>
+        <p>Specific format for an R07 income appeal using a sworn affidavit from a commissioner of oaths. Free at your nearest police station.</p>
+        <span class="tag" style="background:rgba(26,63,122,.08);color:var(--blue)">R07 SPECIFIC</span>
+      </div>
+      <div class="tpl-card" style="border-left-color:var(--gold)">
+        <h3>Compassionate Grounds Letter</h3>
+        <p>For R04 (academic failure) appeals. Documents the crisis event that caused the academic setback.</p>
+        <span class="tag" style="background:rgba(184,137,15,.08);color:var(--gold)">R04 SPECIFIC</span>
+      </div>
+      <div class="tpl-card" style="border-left-color:var(--green)">
+        <h3>Continuation Renewal Checklist</h3>
+        <p>Step-by-step checklist for State 5 (annual renewal). Institution-specific threshold reference included.</p>
+        <span class="tag" style="background:rgba(26,107,50,.08);color:var(--green)">STATE 5</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<div class="contact-section">
+  <div class="container">
+    <h2>NSFAS Contacts</h2>
+    <div class="contact-grid">
+      <div class="contact-card"><div class="ct">Call Centre (Toll-free)</div><div class="cv">0800 067 327</div></div>
+      <div class="contact-card"><div class="ct">myNSFAS Portal</div><div class="cv">mynsfas.nsfas.org.za</div></div>
+      <div class="contact-card"><div class="ct">WhatsApp Line</div><div class="cv">082 316 4444</div></div>
+      <div class="contact-card"><div class="ct">NSFAS Circulars</div><div class="cv">nsfas.org.za/circulars</div></div>
+    </div>
+    <p style="font-family:var(--mono);font-size:.7rem;color:#666;margin-top:1.25rem">ENIL Navigation Intelligence | Free for all learners | enil.co.za</p>
+  </div>
+</div>
+
+<footer>
+  ENIL Navigation Intelligence | Data: NSFAS Act · DHET 2025 · Ekurhuleni Beachhead Edition |
+  <a href="/data/">Raw Data</a> · <a href="/about/">About</a> · <a href="/">Home</a>
+</footer>
+
+<script>
+// Auto-detect current NSFAS state
+function detectState(){
+  const m = new Date().getMonth()+1;
+  const states = {
+    10:'Pre-Application (State 0)',11:'Pre-Application (State 0)',
+    12:'Submitted/Pending (State 1)',1:'Submitted/Pending (State 1)',
+    2:'Provisionally Funded (State 2)',
+    3:'Appeals Window (State 3)',4:'Appeals Window (State 3)',5:'Appeals Window (State 3)',
+    9:'Continuation Renewal (State 5)'
+  };
+  return states[m] || 'Disbursement Active (State 4)';
+}
+document.getElementById('currentStateBadge').textContent = detectState();
+
+// Toggle state accordion
+function toggleState(el){
+  const body = el.querySelector('.state-body');
+  const isOpen = body.classList.contains('open');
+  document.querySelectorAll('.state-body').forEach(b=>b.classList.remove('open'));
+  if(!isOpen) body.classList.add('open');
+}
+
+// Copy letter
+function copyLetter(){
+  const content = document.getElementById('letterContent').innerText;
+  navigator.clipboard.writeText(content).then(()=>{
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!'; btn.classList.add('ok');
+    setTimeout(()=>{btn.textContent='Copy Letter';btn.classList.remove('ok')},2500);
+  });
+}
+</script>
+</body>
+</html>
