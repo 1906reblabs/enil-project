@@ -1,1 +1,138 @@
+name: "ENIL — Site Rebuild & Deploy"
 
+on:
+  workflow_dispatch:
+    inputs:
+      triggered_by:
+        description: "What triggered this rebuild"
+        required: false
+        default: "manual"
+      date:
+        description: "Data update date"
+        required: false
+
+  push:
+    branches: [main]
+    paths: ["site/**", "templates/**", "generators/**"]
+
+  # Full weekly rebuild — Sunday 05:00 UTC = 07:00 SAST
+  schedule:
+    - cron: "0 5 * * 0"
+
+permissions:
+  contents: read
+  pages:    write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: "Build GitHub Pages"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout enil-site
+        uses: actions/checkout@v4
+        with:
+          repository: ENIL-ZA/enil-site
+
+      - name: Checkout enil-data (latest data)
+        uses: actions/checkout@v4
+        with:
+          repository: ENIL-ZA/enil-data
+          token: ${{ secrets.ENIL_DATA_TOKEN }}
+          path: _data
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python deps
+        run: pip install jinja2 markdown python-frontmatter
+
+      - name: Copy latest data into site
+        run: |
+          mkdir -p site/data
+          cp _data/pipeline/data/labour/demand_gap.json   site/data/ 2>/dev/null || true
+          cp _data/pipeline/data/labour/vacancies.json    site/data/ 2>/dev/null || true
+          cp _data/pipeline/data/nsfas/alerts.json        site/data/ 2>/dev/null || true
+          cp _data/pipeline/data/nsfas/state_machine.json site/data/ 2>/dev/null || true
+          cp _data/pipeline/data/aps/aps_requirements.csv site/data/ 2>/dev/null || true
+          echo "Data sync complete"
+
+      - name: Convert APS CSV → JSON for calculator
+        run: |
+          python3 - <<'EOF'
+          import csv, json
+          rows = []
+          try:
+              with open("site/data/aps_requirements.csv") as f:
+                  rows = list(csv.DictReader(f))
+          except FileNotFoundError:
+              pass
+          with open("site/data/aps_programmes.json","w") as f:
+              json.dump({"programmes": rows, "updated": "$(date +%Y-%m-%d)"}, f, indent=2)
+          print(f"APS JSON: {len(rows)} programmes")
+          EOF
+
+      - name: Generate sitemap.xml
+        run: |
+          python3 - <<'EOF'
+          from pathlib import Path
+          import datetime
+
+          base  = "https://enil.co.za"
+          today = datetime.date.today().isoformat()
+          pages = [
+              "", "/aps-calculator/", "/credential-trap/", "/nsfas/", "/ekurhuleni-map/",
+              "/data/", "/about/",
+          ]
+          urls = "\n".join(
+              f"  <url><loc>{base}{p}</loc><lastmod>{today}</lastmod></url>"
+              for p in pages
+          )
+          xml = f"""<?xml version="1.0" encoding="UTF-8"?>
+          <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+          {urls}
+          </urlset>"""
+          Path("site/sitemap.xml").write_text(xml)
+          print("sitemap.xml generated")
+          EOF
+
+      - name: Add CNAME for custom domain
+        run: echo "enil.co.za" > site/CNAME
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/
+
+  deploy:
+    name: "Deploy to GitHub Pages"
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Verify live site
+        run: |
+          sleep 30
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://enil.co.za || echo "000")
+          echo "Live site status: $STATUS"
+          [ "$STATUS" = "200" ] && echo "✅ enil.co.za is live" || echo "⏳ DNS still propagating"
+
+      - name: Ping GSC post-deploy
+        run: curl -s "https://www.google.com/ping?sitemap=https://enil.co.za/sitemap.xml" || true
