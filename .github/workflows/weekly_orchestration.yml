@@ -1,0 +1,110 @@
+name: "ENIL — Weekly Orchestration"
+
+on:
+  # Every Monday 04:00 UTC = 06:00 SAST
+  schedule:
+    - cron: "0 4 * * 1"
+
+  # Manual trigger with options
+  workflow_dispatch:
+    inputs:
+      phase:
+        description: "Run single phase only (1–5, or leave blank for all)"
+        required: false
+        default: ""
+      skip_pipeline:
+        description: "Skip data pipeline refresh? (true/false)"
+        required: false
+        default: "false"
+      dry_run:
+        description: "Dry run — no file writes? (true/false)"
+        required: false
+        default: "false"
+
+env:
+  PYTHON_VERSION: "3.11"
+
+jobs:
+  orchestrate:
+    name: "Weekly Intelligence + Revenue + Optimisation Loop"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout enil-data
+        uses: actions/checkout@v4
+        with:
+          repository: ENIL-ZA/enil-data
+          token: ${{ secrets.ENIL_DATA_TOKEN }}
+          path: enil-data
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r enil-data/requirements.txt
+
+      - name: Install system deps
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y tesseract-ocr tesseract-ocr-eng
+
+      - name: Install Playwright
+        run: playwright install chromium --with-deps
+
+      - name: Run weekly orchestrator
+        id: orchestrate
+        working-directory: enil-data
+        env:
+          GITHUB_ACTIONS: "true"
+        run: |
+          PHASE_ARG=""
+          [ -n "${{ github.event.inputs.phase }}" ] && PHASE_ARG="--phase ${{ github.event.inputs.phase }}"
+
+          SKIP_ARG=""
+          [ "${{ github.event.inputs.skip_pipeline }}" = "true" ] && SKIP_ARG="--skip-pipeline"
+
+          DRY_ARG=""
+          [ "${{ github.event.inputs.dry_run }}" = "true" ] && DRY_ARG="--dry-run"
+
+          python weekly_orchestrator.py $PHASE_ARG $SKIP_ARG $DRY_ARG
+
+      - name: Check for report changes
+        id: diff
+        working-directory: enil-data
+        run: git diff --quiet weekly_reports/ obsidian/ revenue_pipeline.json || echo "CHANGED=true" >> "$GITHUB_OUTPUT"
+
+      - name: Commit weekly report
+        if: steps.diff.outputs.CHANGED == 'true' && github.event.inputs.dry_run != 'true'
+        working-directory: enil-data
+        run: |
+          git config user.name  "ENIL Orchestration Bot"
+          git config user.email "orchestration@enil.co.za"
+          git add weekly_reports/ obsidian/ revenue_pipeline.json logs/
+          git commit -m "📊 Weekly report $(date +%Y-%m-%d) — orchestration run ${{ github.run_id }}"
+          git push
+
+      - name: Upload orchestration log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-orchestration-log-${{ github.run_id }}
+          path: enil-data/logs/weekly_orchestrator.log
+          retention-days: 90
+
+      - name: Summarise in GitHub Actions summary
+        if: always()
+        working-directory: enil-data
+        run: |
+          REPORT=$(ls weekly_reports/*.json 2>/dev/null | sort | tail -1)
+          if [ -n "$REPORT" ]; then
+            echo "## ENIL Weekly Orchestration Summary" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Week:** $(python3 -c "import json; d=json.load(open('$REPORT')); print(d.get('week',''))")" >> $GITHUB_STEP_SUMMARY
+            echo "**Opportunities found:** $(python3 -c "import json; d=json.load(open('$REPORT')); print(len(d.get('intelligence',{}).get('opportunities',[])))")" >> $GITHUB_STEP_SUMMARY
+            echo "**Next run:** $(python3 -c "import json; d=json.load(open('$REPORT')); print(d.get('next_run',''))")" >> $GITHUB_STEP_SUMMARY
+          fi
