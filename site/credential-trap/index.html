@@ -1,1 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Credential Trap Detector — Subject Choice Guide 2025 | ENIL</title>
+<meta name="description" content="Is your matric subject combination a credential trap? Check your Grade 10–12 subjects against Classes A–D. Mathematical Literacy permanently forecloses engineering pathways. Know before it's too late.">
+<meta name="keywords" content="matric subject choice grade 10, credential trap south africa, technical maths vs pure maths, maths literacy engineering, subject combination matric">
+<link rel="canonical" href="https://enil.co.za/credential-trap/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does Mathematical Literacy close engineering options?","acceptedAnswer":{"@type":"Answer","text":"Yes — permanently. Mathematical Literacy excludes you from all university engineering programmes AND all NATED N1-N3 artisan pathways at TVET colleges. This is Class A: a complete credential trap. If you are in Grade 10 or 11, switch to Technical Mathematics to preserve TVET engineering pathways."}},{"@type":"Question","name":"What is Technical Mathematics and what does it open?","acceptedAnswer":{"@type":"Answer","text":"Technical Mathematics is a CAPS subject that opens TVET N1-N3 artisan pathways — electrician, millwright, instrumentation technician — without requiring Pure Mathematics. These pathways lead to salaries of R35,000–R47,000/month at year 3, substantially above the BCom graduate median of R23,000/month in the same period."}},{"@type":"Question","name":"What is the best subject combination for engineering in South Africa?","acceptedAnswer":{"@type":"Answer","text":"Pure Mathematics + Physical Sciences + Engineering Graphics and Design (EGD) is the optimal combination — Class D. It simultaneously qualifies for university BEng programmes, TVET N-series artisan pathways, and SETA-funded learnerships. EGD is the underrated addition that opens technical drawing and fabrication employer pipelines."}}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0a0a08;--paper:#f2f0e8;--surface:#e8e5dc;--card:#fff;
+  --accent:#c8391a;--gold:#b8890f;--green:#1a6b32;--blue:#1a3f7a;
+  --muted:#7a7868;--border:#d0cdc0;
+  --mono:'IBM Plex Mono',monospace;--sans:'Syne',system-ui,sans-serif;--serif:'Libre Baskerville',Georgia,serif
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.6}
+nav{background:var(--ink);border-bottom:2px solid var(--accent);padding:.9rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.logo{font-family:var(--mono);font-weight:600;font-size:.95rem;letter-spacing:.2em;color:#fff}
+.logo em{color:var(--accent);font-style:normal}
+nav a{color:#888;text-decoration:none;font-family:var(--mono);font-size:.7rem;margin-left:1.25rem}
+nav a:hover{color:#fff}
+nav a.active{color:var(--accent)}
 
+.hero{background:var(--ink);color:#fff;padding:2.5rem 1.5rem 2rem;border-bottom:3px solid var(--gold)}
+.hero-inner{max-width:860px;margin:0 auto}
+.hero-tag{display:inline-flex;align-items:center;gap:.4rem;border:1px solid rgba(184,137,15,.5);border-radius:3px;padding:.2rem .65rem;font-family:var(--mono);font-size:.65rem;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem}
+.hero h1{font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;line-height:1.15}
+.hero h1 em{color:var(--gold);font-style:italic}
+.hero p{color:#aaa;max-width:560px;margin:.9rem 0 0;font-size:.9rem;line-height:1.85}
+
+.container{max-width:860px;margin:0 auto;padding:0 1.5rem}
+
+/* Class cards */
+.classes{padding:2.5rem 0}
+.section-label{font-family:var(--mono);font-size:.63rem;text-transform:uppercase;letter-spacing:.15em;color:var(--gold);margin-bottom:.6rem}
+.classes h2{font-family:var(--serif);font-size:1.6rem;font-weight:700;margin-bottom:1.5rem}
+.class-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+
+.class-card{border-radius:9px;padding:1.5rem;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.class-card:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,.1)}
+.cc-a{background:#2d0808;color:#fff;border:1px solid rgba(200,57,26,.3)}
+.cc-b{background:#2d2108;color:#fff;border:1px solid rgba(184,137,15,.3)}
+.cc-c{background:#081f2d;color:#fff;border:1px solid rgba(26,63,122,.3)}
+.cc-d{background:#081d0e;color:#fff;border:1px solid rgba(26,107,50,.3)}
+.cc-label{font-family:var(--mono);font-weight:700;font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;margin-bottom:.4rem;opacity:.7}
+.cc-class{font-family:var(--serif);font-size:2.5rem;font-weight:700;line-height:1;margin-bottom:.4rem}
+.cc-a .cc-class{color:#e88}
+.cc-b .cc-class{color:#e8c04a}
+.cc-c .cc-class{color:#6a9fce}
+.cc-d .cc-class{color:#4aaa6a}
+.cc-title{font-weight:700;font-size:.95rem;margin-bottom:.6rem}
+.cc-desc{font-size:.82rem;line-height:1.75;opacity:.8}
+.cc-badge{display:inline-flex;margin-top:.75rem;font-family:var(--mono);font-size:.65rem;padding:.25rem .6rem;border-radius:3px}
+.ba{background:rgba(200,57,26,.3);color:#e88}
+.bb{background:rgba(184,137,15,.3);color:#e8c04a}
+.bc{background:rgba(26,63,122,.3);color:#8abfe0}
+.bd{background:rgba(26,107,50,.3);color:#4aaa6a}
+
+/* Combination lookup */
+.combos{padding:2.5rem 0;border-top:1px solid var(--border)}
+.combos h2{font-family:var(--serif);font-size:1.6rem;font-weight:700;margin-bottom:1.5rem}
+
+.combo-filter{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.filter-btn{
+  padding:.4rem .9rem;border:1px solid var(--border);border-radius:4px;background:var(--card);
+  font-family:var(--mono);font-size:.7rem;cursor:pointer;transition:all .15s;color:var(--ink)
+}
+.filter-btn:hover{border-color:var(--ink)}
+.filter-btn.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.filter-btn.fa{background:var(--accent);color:#fff;border-color:var(--accent)}
+.filter-btn.fb{background:var(--gold);color:#fff;border-color:var(--gold)}
+.filter-btn.fc{background:var(--blue);color:#fff;border-color:var(--blue)}
+.filter-btn.fd{background:var(--green);color:#fff;border-color:var(--green)}
+
+.combo-list{display:flex;flex-direction:column;gap:.625rem}
+.combo-item{
+  background:var(--card);border:1px solid var(--border);border-radius:8px;
+  padding:1rem 1.25rem;display:grid;grid-template-columns:auto 1fr auto;
+  gap:.75rem 1rem;align-items:start;border-left:3px solid var(--border)
+}
+.ci-a{border-left-color:var(--accent)}
+.ci-b{border-left-color:var(--gold)}
+.ci-c{border-left-color:var(--blue)}
+.ci-d{border-left-color:var(--green)}
+.combo-class{font-family:var(--mono);font-weight:700;font-size:1.2rem;line-height:1;margin-top:.15rem}
+.ca-cl{color:var(--accent)}.cb-cl{color:var(--gold)}.cc-cl{color:var(--blue)}.cd-cl{color:var(--green)}
+.combo-body .subjects{font-weight:700;font-size:.88rem;margin-bottom:.3rem}
+.combo-body .verdict{font-size:.82rem;color:var(--muted);line-height:1.7}
+.combo-aps{text-align:right}
+.aps-num{font-family:var(--mono);font-size:1.2rem;font-weight:600;color:var(--ink);line-height:1}
+.aps-lbl{font-family:var(--mono);font-size:.58rem;color:var(--muted)}
+.combo-rec{grid-column:1/-1;font-family:var(--mono);font-size:.72rem;padding:.6rem .9rem;border-radius:5px;line-height:1.7}
+.rec-a{background:rgba(200,57,26,.06);color:#7a2010}
+.rec-b{background:rgba(184,137,15,.06);color:#6a4e00}
+.rec-c{background:rgba(26,63,122,.06);color:#0a2a5a}
+.rec-d{background:rgba(26,107,50,.06);color:#0a4a1a}
+
+/* Maths warning box */
+.maths-trap{background:#1a0202;border:2px solid var(--accent);border-radius:9px;padding:1.75rem;margin:2.5rem 0}
+.maths-trap h3{font-family:var(--serif);font-size:1.3rem;color:#ff9a8a;margin-bottom:.75rem}
+.maths-trap p{color:#e0c0bc;font-size:.85rem;line-height:1.85}
+.maths-trap .compare{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.25rem}
+.compare-col{border-radius:7px;padding:1rem}
+.compare-bad{background:rgba(200,57,26,.2);border:1px solid rgba(200,57,26,.3)}
+.compare-ok{background:rgba(26,107,50,.2);border:1px solid rgba(26,107,50,.3)}
+.compare-col h4{font-family:var(--mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.6rem}
+.compare-bad h4{color:#e88}
+.compare-ok h4{color:#6aaa8a}
+.compare-col li{font-size:.8rem;margin-left:1rem;line-height:1.9;color:#e0ddd4}
+
+/* Salary section */
+.salary{padding:2.5rem 0;border-top:1px solid var(--border)}
+.salary h2{font-family:var(--serif);font-size:1.6rem;font-weight:700;margin-bottom:.5rem}
+.salary .sub{font-size:.85rem;color:var(--muted);margin-bottom:1.5rem}
+.salary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.875rem}
+.salary-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1.25rem}
+.salary-card .trade{font-weight:700;font-size:.88rem;margin-bottom:.25rem}
+.salary-card .amount{font-family:var(--mono);font-size:1.6rem;font-weight:600;color:var(--green);line-height:1;margin:.3rem 0}
+.salary-card .vs{font-family:var(--mono);font-size:.68rem;color:var(--gold)}
+.salary-card .pathway{font-size:.76rem;color:var(--muted);margin-top:.5rem;line-height:1.7;border-top:1px solid var(--border);padding-top:.5rem}
+
+/* CTA */
+.cta{background:var(--ink);color:#fff;text-align:center;padding:3rem 1.5rem;margin-top:3rem}
+.cta h2{font-family:var(--serif);font-size:1.4rem;margin-bottom:.75rem}
+.cta p{color:#999;max-width:480px;margin:0 auto 1.5rem;font-size:.88rem}
+.cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.5rem;border-radius:6px;font-weight:700;font-size:.88rem;text-decoration:none;transition:all .15s}
+.btn-red{background:var(--accent);color:#fff}
+.btn-outline{border:1px solid #444;color:#ccc}
+.btn-outline:hover{border-color:#888;color:#fff}
+
+footer{background:#111;color:#555;text-align:center;padding:1.5rem;font-family:var(--mono);font-size:.65rem}
+footer a{color:#777}
+@media(max-width:620px){.class-grid{grid-template-columns:1fr}.combo-item{grid-template-columns:auto 1fr;}.combo-aps{display:none}.maths-trap .compare{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <span class="logo">E·<em>N</em>·I·L</span>
+  <div>
+    <a href="/">Home</a>
+    <a href="/aps-calculator/">APS</a>
+    <a href="/credential-trap/" class="active">Credential Trap</a>
+    <a href="/nsfas/">NSFAS</a>
+    <a href="/ekurhuleni-map/">Ekurhuleni Map</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">⚠️ Credential Trap Detector</div>
+    <h1>Your Subject Combination<br>Is <em>Not Neutral.</em></h1>
+    <p>The subjects you choose in Grade 9–10 either multiply your options or permanently foreclose them. Most learners are not told which. ENIL classifies every CAPS combination from Class A (dead end) to Class D (optimal). Check yours.</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- CLASS SYSTEM -->
+  <div class="classes">
+    <div class="section-label">// The Four Classes</div>
+    <h2>What Class Is Your Combination?</h2>
+    <div class="class-grid">
+      <div class="class-card cc-a">
+        <div class="cc-label">Class A</div>
+        <div class="cc-class">A</div>
+        <div class="cc-title">Dead End</div>
+        <div class="cc-desc">Forecloses both university STEM programmes AND high-demand TVET artisan pathways. Usually caused by Mathematical Literacy choice in Grade 10. Requires immediate intervention if still in school.</div>
+        <span class="cc-badge ba">Emergency intervention needed</span>
+      </div>
+      <div class="class-card cc-b">
+        <div class="cc-label">Class B</div>
+        <div class="cc-class">B</div>
+        <div class="cc-title">Mismatch Risk</div>
+        <div class="cc-desc">University-eligible on paper, but the programmes accessible have weak Ekurhuleni labour demand, limited NSFAS coverage, or salary outcomes below artisan pathways. Common among arts/humanities combinations.</div>
+        <span class="cc-badge bb">Redirect evaluation recommended</span>
+      </div>
+      <div class="class-card cc-c">
+        <div class="cc-label">Class C</div>
+        <div class="cc-class">C</div>
+        <div class="cc-title">Invisible Pathway</div>
+        <div class="cc-desc">TVET artisan pathway outperforming BCom graduates within 3 years, but actively undersold by school guidance. Technical Maths + EGD combinations fall here. These learners are being systematically misdirected.</div>
+        <span class="cc-badge bc">Promote aggressively</span>
+      </div>
+      <div class="class-card cc-d">
+        <div class="cc-label">Class D</div>
+        <div class="cc-class">D</div>
+        <div class="cc-title">Optimal</div>
+        <div class="cc-desc">Simultaneously qualifies for university APS thresholds, TVET N-series engineering pathways, and SETA-funded learnerships. Maximum optionality. Pure Maths + EGD combinations are the archetype.</div>
+        <span class="cc-badge bd">Highest value combination</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MATHS TRAP CALLOUT -->
+  <div class="maths-trap">
+    <h3>⛔ The Single Most Damaging Subject Choice in SA Education</h3>
+    <p>Mathematical Literacy is not a "softer maths" — it is a permanently disqualifying subject for both university engineering and TVET artisan pathways. Teachers who recommend it are optimising for pass rates, not learner outcomes.</p>
+    <div class="compare">
+      <div class="compare-col compare-bad">
+        <h4>Mathematical Literacy → FORECLOSES</h4>
+        <ul>
+          <li>All university engineering (BSc, BEng)</li>
+          <li>All NATED N1–N3 artisan programmes</li>
+          <li>Physical Sciences (most schools)</li>
+          <li>BCom Accounting (most institutions)</li>
+          <li>Any career requiring quantitative analysis</li>
+        </ul>
+      </div>
+      <div class="compare-col compare-ok">
+        <h4>Technical Mathematics → OPENS</h4>
+        <ul>
+          <li>TVET N1–N6 Electrical Engineering</li>
+          <li>TVET N1–N6 Mechanical Engineering</li>
+          <li>MERSETA apprenticeships</li>
+          <li>NCV Level 4 engineering programmes</li>
+          <li>R35k–R47k/month within 5 years</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMBINATION LOOKUP -->
+  <div class="combos">
+    <div class="section-label">// Combination Reference</div>
+    <h2>Common CAPS Combinations Classified</h2>
+    <div class="combo-filter">
+      <button class="filter-btn active" onclick="filterCombos('all', this)">All</button>
+      <button class="filter-btn fa" onclick="filterCombos('A', this)">Class A — Dead End</button>
+      <button class="filter-btn fb" onclick="filterCombos('B', this)">Class B — Mismatch</button>
+      <button class="filter-btn fc" onclick="filterCombos('C', this)">Class C — Invisible</button>
+      <button class="filter-btn fd" onclick="filterCombos('D', this)">Class D — Optimal</button>
+    </div>
+    <div class="combo-list" id="comboList"></div>
+  </div>
+
+  <!-- SALARY SECTION -->
+  <div class="salary">
+    <div class="section-label">// Why Class C & D Matter</div>
+    <h2>Artisan Salaries vs BCom (Year 3)</h2>
+    <p class="sub">BCom graduate median at Year 3: R23,000/month. All figures below are Ekurhuleni corridor median, MERSETA 2024.</p>
+    <div class="salary-grid">
+      <div class="salary-card">
+        <div class="trade">Millwright</div>
+        <div class="amount">R47k</div>
+        <div class="vs">+104% vs BCom</div>
+        <div class="pathway">TechMaths → TVET N3 Mech → MERSETA apprenticeship → Trade test</div>
+      </div>
+      <div class="salary-card">
+        <div class="trade">Instrumentation Tech</div>
+        <div class="amount">R42k</div>
+        <div class="vs">+83% vs BCom</div>
+        <div class="pathway">TechMaths → TVET N3 Electrical → MERSETA apprenticeship → Trade test</div>
+      </div>
+      <div class="salary-card">
+        <div class="trade">Electrician (Coded)</div>
+        <div class="amount">R39k</div>
+        <div class="vs">+70% vs BCom</div>
+        <div class="pathway">TechMaths → TVET N3 Electrical → EWSETA apprenticeship → CoC</div>
+      </div>
+      <div class="salary-card">
+        <div class="trade">HVAC Technician</div>
+        <div class="amount">R35k</div>
+        <div class="vs">+52% vs BCom</div>
+        <div class="pathway">TechMaths → TVET N3 Mechanical → MERSETA apprenticeship</div>
+      </div>
+      <div class="salary-card">
+        <div class="trade">Coded Welder</div>
+        <div class="amount">R32k</div>
+        <div class="vs">+39% vs BCom</div>
+        <div class="pathway">Any Maths → TVET N3 Mechanical → MERSETA certification</div>
+      </div>
+      <div class="salary-card">
+        <div class="trade">BCom Graduate</div>
+        <div class="amount" style="color:var(--muted)">R23k</div>
+        <div class="vs" style="color:var(--muted)">Benchmark (median)</div>
+        <div class="pathway">4yr degree → entry level → significant debt vs NSFAS TVET</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="cta">
+  <h2>Calculate your APS score and see which programmes you qualify for.</h2>
+  <p>The APS Calculator cross-references your marks against all 26 SA universities and the ENIL TVET database with live Ekurhuleni demand signals.</p>
+  <div class="cta-btns">
+    <a href="/aps-calculator/" class="btn btn-red">APS Calculator →</a>
+    <a href="/ekurhuleni-map/" class="btn btn-outline">View Labour Map</a>
+  </div>
+</div>
+
+<footer>
+  ENIL Navigation Intelligence | Data: DBE CAPS 2024 · MERSETA 2024 · DHET TVET Data |
+  <a href="/data/">Raw Data</a> · <a href="/about/">About</a> · <a href="/">Home</a>
+</footer>
+
+<script>
+const COMBOS = [
+  {cl:'A',subjects:'Maths Literacy + Tourism + Business Studies',aps:18,verdict:'All three subjects have low Ekurhuleni labour demand. Tourism has the lowest employment rate among CAPS subjects. Maths Literacy permanently forecloses artisan pathways.',rec:'⛔ Switch to Technical Mathematics immediately. Replace Tourism with EGD or IT. This combination will be difficult to fund with NSFAS for most programmes it qualifies for.'},
+  {cl:'A',subjects:'Maths Literacy + Consumer Studies + Business Studies',aps:19,verdict:'Maths Literacy closes all technical pathways. Consumer Studies has near-zero formal sector demand in Ekurhuleni. The APS is too low for most funded BCom programmes.',rec:'⛔ Class A trap. If still in Grade 10 or 11: switch Maths Literacy to Technical Mathematics as a minimum. Replace Consumer Studies with Accounting.'},
+  {cl:'A',subjects:'Maths Literacy + History + Life Sciences',aps:20,verdict:'History has no measurable labour market demand in Ekurhuleni. Life Sciences opens nursing/medical pathways — but Maths Literacy closes them for university entry. Conflicting combination.',rec:'⛔ Life Sciences without Pure Maths severely limits healthcare pathway access. If Grade 9/10: switch to Pure Maths + Life Sciences for the healthcare Class D pathway.'},
+  {cl:'B',subjects:'Pure Maths + Geography + Life Sciences',aps:24,verdict:'University-eligible. Opens BSc Environmental Science / Geography. However, Ekurhuleni has near-zero environmental science employer demand. Strong mismatch between credential and local market.',rec:'⚠️ Class B mismatch. The combination is academically strong but Ekurhuleni has limited environmental science employers. If staying: target national/urban planning roles. If flexible: EGD replaces Geography for better local demand alignment.'},
+  {cl:'B',subjects:'Pure Maths + Business Studies + Tourism',aps:22,verdict:'Business Studies has medium demand (logistics/management). Tourism has low Ekurhuleni demand. Pure Maths preserves options but the combination underuses it.',rec:'⚠️ Replace Tourism with Accounting or IT. Pure Maths + Accounting + Business Studies is a Class D BCom pathway with strong Ekurhuleni demand in financial management.'},
+  {cl:'C',subjects:'Technical Maths + EGD + Physical Sciences',aps:22,verdict:'This is the premier invisible pathway. EGD + Technical Maths opens TVET N1-N3 engineering, draughting, and fabrication pathways. Ekurhuleni manufacturing sector actively recruits this profile.',rec:'💡 Class C — promote this combination. TVET N3 Mechanical or Electrical via Springs TVET or Ekurhuleni West TVET. MERSETA apprenticeship follows. R35k–R47k within 5 years. NSFAS covers TVET.'},
+  {cl:'C',subjects:'Technical Maths + Electrical Technology',aps:21,verdict:'The most direct pathway to an electrician apprenticeship. Electrical Technology is taught in fewer schools but is the strongest signal to EWSETA-funded employer pipelines.',rec:'💡 Class C invisible. TVET N3 Electrical → EWSETA apprenticeship → CoC (Certificate of Competency). This exact combination is what Scaw Metals and Rand Refinery hire from. NSFAS + EWSETA covers all costs.'},
+  {cl:'D',subjects:'Pure Maths + Physical Sciences + EGD',aps:26,verdict:'The optimal combination. Qualifies for BSc Engineering (UP/Wits/UJ/TUT), TVET N-series engineering, and all SETA-funded learnerships. Maximum optionality. EGD provides competitive advantage in technical interviews.',rec:'✅ Class D optimal. This is the aspirational combination for Ekurhuleni learners. If APS ≥26: BEng Tech at UJ/TUT. If APS ≥32: BSc Engineering at UP. TVET pathway available regardless of APS.'},
+  {cl:'D',subjects:'Pure Maths + Physical Sciences + Life Sciences',aps:26,verdict:'University engineering AND medicine/pharmacy/nursing pathways simultaneously open. The highest-optionality combination available. Critical national shortage occupations in all three science pathways.',rec:'✅ Class D optimal. If targeting medicine: Life Sciences L6+ is required. If targeting engineering: replace Life Sciences with EGD at Grade 10 to gain technical pathway advantage.'},
+  {cl:'D',subjects:'Pure Maths + Accounting + Business Studies',aps:24,verdict:'The optimal BCom/finance pathway. CTA (Certificate in the Theory of Accounting) and SAICA qualification paths open. Ekurhuleni has growing financial management demand in logistics and manufacturing.',rec:'✅ Class D optimal for commerce. BCom Accounting at UJ (APS 22+) or Wits (APS 32+). NSFAS-eligible. Strong Kempton Park logistics cluster demand for financial controllers.'},
+  {cl:'D',subjects:'Pure Maths + IT + Physical Sciences',aps:25,verdict:'IT + Maths + Sciences opens BSc Computer Science, BSc Information Technology, and software engineering pathways. Kempton Park (OR Tambo logistics cluster) has strong IT technician and systems demand.',rec:'✅ Class D. BSc IT at UP/UJ or NCI. IT technician artisan pathway also available. Kempton Park demand: 123 open IT technician vacancies vs ~167 TVET graduates — demand gap closing.'},
+];
+
+function renderCombos(filter){
+  const list = document.getElementById('comboList');
+  const items = filter==='all' ? COMBOS : COMBOS.filter(c=>c.cl===filter);
+  list.innerHTML = items.map(c=>`
+    <div class="combo-item ci-${c.cl.toLowerCase()}" data-class="${c.cl}">
+      <div class="combo-class c${c.cl.toLowerCase()}-cl">${c.cl}</div>
+      <div class="combo-body">
+        <div class="subjects">${c.subjects}</div>
+        <div class="verdict">${c.verdict}</div>
+      </div>
+      <div class="combo-aps">
+        <div class="aps-num">~${c.aps}</div>
+        <div class="aps-lbl">APS est.</div>
+      </div>
+      <div class="combo-rec rec-${c.cl.toLowerCase()}">${c.rec}</div>
+    </div>
+  `).join('');
+}
+
+function filterCombos(f, btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCombos(f);
+}
+
+renderCombos('all');
+</script>
+</body>
+</html>
