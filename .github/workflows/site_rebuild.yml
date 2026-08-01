@@ -1,131 +1,45 @@
-name: "ENIL — Site Rebuild & Deploy"
-
-# ─────────────────────────────────────────────────────────────────────────────
-# SINGLE-REPO VERSION
-# Everything lives in 1906reblabs/enil-project.
-# This workflow deploys site/ to GitHub Pages.
-# Trigger: push to main (site/** or pipeline/data/**) + every Sunday + manual.
-# ─────────────────────────────────────────────────────────────────────────────
+name: Deploy Jekyll with GitHub Pages dependencies preinstalled
 
 on:
-  workflow_dispatch:
-    inputs:
-      triggered_by:
-        description: "What triggered this rebuild"
-        required: false
-        default: "manual"
-
   push:
-    branches: [main]
-    paths:
-      - "site/**"
-      - "pipeline/data/**"
-
-  # Full weekly rebuild — Sunday 05:00 UTC = 07:00 SAST
-  schedule:
-    - cron: "0 5 * * 0"
+    branches: ["main"]
+  workflow_dispatch:
 
 permissions:
   contents: read
-  pages:    write
+  pages: write
   id-token: write
 
 concurrency:
-  group: pages
-  cancel-in-progress: true
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   build:
-    name: "Build GitHub Pages"
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repo
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install Python deps (minimal — for data conversion only)
-        run: pip install jinja2
-
-      - name: Sync pipeline data into site/data/
-        run: |
-          mkdir -p site/data
-          # Copy validated data files if they exist (populated by data_monitor.yml)
-          cp pipeline/data/labour/demand_gap.json   site/data/ 2>/dev/null || echo "demand_gap.json not yet generated"
-          cp pipeline/data/labour/vacancies.json    site/data/ 2>/dev/null || true
-          cp pipeline/data/nsfas/alerts.json        site/data/ 2>/dev/null || true
-          cp pipeline/data/nsfas/state_machine.json site/data/ 2>/dev/null || true
-          cp pipeline/data/aps/aps_requirements.csv site/data/ 2>/dev/null || true
-          echo "Data sync complete"
-
-      - name: Convert APS CSV → JSON for calculator
-        run: |
-          python3 - <<'EOF'
-          import csv, json, datetime
-          rows = []
-          try:
-              with open("site/data/aps_requirements.csv") as f:
-                  rows = list(csv.DictReader(f))
-          except FileNotFoundError:
-              pass
-          with open("site/data/aps_programmes.json", "w") as f:
-              json.dump({"programmes": rows, "updated": str(datetime.date.today())}, f, indent=2)
-          print(f"APS JSON: {len(rows)} programmes")
-          EOF
-
-      - name: Generate sitemap.xml
-        run: |
-          python3 - <<'EOF'
-          from pathlib import Path
-          import datetime
-          base  = "https://1906reblabs.github.io/enil-project"
-          today = datetime.date.today().isoformat()
-          pages = [
-              "", "/aps-calculator/", "/credential-trap/",
-              "/nsfas/", "/ekurhuleni-map/", "/data/", "/about/",
-          ]
-          urls = "\n".join(
-              f"  <url><loc>{base}{p}</loc><lastmod>{today}</lastmod></url>"
-              for p in pages
-          )
-          xml = f"""<?xml version="1.0" encoding="UTF-8"?>
-          <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-          {urls}
-          </urlset>"""
-          Path("site/sitemap.xml").write_text(xml)
-          print("sitemap.xml generated")
-          EOF
-
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
         with:
-          path: site/
+          source: ./site
+          destination: ./_site
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
 
   deploy:
-    name: "Deploy to GitHub Pages"
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
-
     steps:
-      - name: Deploy
+      - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
-
-      - name: Verify live site
-        run: |
-          sleep 20
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-            https://1906reblabs.github.io/enil-project/ --max-time 15 || echo "000")
-          echo "Live site HTTP status: $STATUS"
-          [ "$STATUS" = "200" ] && echo "✅ Site is live" || echo "⏳ May still be deploying"
-          
+        uses: actions/deploy-pages@v5
