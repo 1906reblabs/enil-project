@@ -52,7 +52,7 @@ jobs:
 
       - name: Install Playwright
         run: |
-         playwright install chromium --with-dep
+         playwright install chromium --with-deps
 
       - name: Run pipeline
         id: pipeline
