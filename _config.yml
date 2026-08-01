@@ -1,0 +1,4 @@
+exclude:
+  - obsidian/templates/
+  - obsidian/templates/**
+  - obsidian/templates/*.md
