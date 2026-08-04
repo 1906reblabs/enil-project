@@ -1,0 +1,154 @@
+# ==============================================================================
+# ENIL Data Sources Configuration
+# ==============================================================================
+#
+# Pipeline Version: 2.0.0
+#
+# This file defines every data source known to the ENIL pipeline.
+#
+# The orchestrator discovers enabled sources from this file instead of
+# hardcoding them in pipeline.py.
+#
+# ==============================================================================
+#
+# enabled         : Whether the scraper runs.
+# priority        : Execution order (lower runs first).
+# scraper         : Python module/class identifier.
+# output_dir      : Destination under pipeline/data.
+# publish         : Copy generated data into site/data.
+# incremental     : Participate in incremental rebuild detection.
+# validate        : Run schema validation after scraping.
+# timeout_seconds : Maximum execution time before failure.
+# schedule        : Intended execution schedule.
+#
+# ==============================================================================
+
+version: "2.0.0"
+
+defaults:
+  enabled: true
+  incremental: true
+  validate: true
+  publish: true
+  timeout_seconds: 600
+
+sources:
+
+  dbe:
+    enabled: true
+    priority: 10
+    scraper: scrapers.dbe_scraper.DBEScraper
+    output_dir: pipeline/data/dbe
+    publish_dir: site/data
+    schedule: daily
+    description: Department of Basic Education
+
+  nsfas:
+    enabled: true
+    priority: 20
+    scraper: scrapers.nsfas_monitor.NSFASMonitor
+    output_dir: pipeline/data/nsfas
+    publish_dir: site/data
+    schedule: every_30_minutes
+    description: NSFAS Status Monitor
+
+  aps:
+    enabled: true
+    priority: 30
+    scraper: scrapers.aps_scraper.APSScraper
+    output_dir: pipeline/data/aps
+    publish_dir: site/data
+    schedule: weekly
+    description: APS Requirements
+
+  labour:
+    enabled: true
+    priority: 40
+    scraper: scrapers.labour_scraper.LabourScraper
+    output_dir: pipeline/data/labour
+    publish_dir: site/data
+    schedule: daily
+    description: Labour Market Intelligence
+
+# ------------------------------------------------------------------------------
+# Future sources
+# ------------------------------------------------------------------------------
+
+  dhet:
+    enabled: false
+    priority: 50
+    scraper: scrapers.dhet_scraper.DHETScraper
+    output_dir: pipeline/data/dhet
+    publish_dir: site/data
+    schedule: daily
+    description: Department of Higher Education
+
+  saqa:
+    enabled: false
+    priority: 60
+    scraper: scrapers.saqa_scraper.SAQAScraper
+    output_dir: pipeline/data/saqa
+    publish_dir: site/data
+    schedule: weekly
+    description: SAQA Qualifications
+
+  che:
+    enabled: false
+    priority: 70
+    scraper: scrapers.che_scraper.CHEScraper
+    output_dir: pipeline/data/che
+    publish_dir: site/data
+    schedule: weekly
+    description: Council on Higher Education
+
+# ==============================================================================
+# Build settings
+# ==============================================================================
+
+build:
+
+  incremental: true
+
+  generate_json: true
+
+  generate_html: true
+
+  generate_manifest: true
+
+  generate_sitemap: true
+
+  generate_rss: true
+
+  validate_html: true
+
+  validate_links: true
+
+  fail_on_validation_error: true
+
+# ==============================================================================
+# Publishing
+# ==============================================================================
+
+publishing:
+
+  site_root: site
+
+  data_directory: site/data
+
+  templates: templates
+
+  output_directory: site
+
+# ==============================================================================
+# Logging
+# ==============================================================================
+
+logging:
+
+  level: INFO
+
+  save_build_summary: true
+
+  save_manifest: true
+
+  save_pipeline_log: true
