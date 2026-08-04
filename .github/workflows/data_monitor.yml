@@ -102,42 +102,7 @@ jobs:
           name: pipeline-log-${{ github.run_id }}
           path: enil_pipeline.log
           retention-days: 30
-
-
-  rebuild-site:
-    name: Trigger Site Rebuild
-
-    needs: extract
-
-    if: needs.extract.outputs.changed == 'true'
-
-    runs-on: ubuntu-24.04
-
-    permissions:
-      actions: write
-      contents: read
-
-    steps:
-
-      - name: Trigger site rebuild
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-          script: |
-            await github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: "site_rebuild.yml",
-              ref: context.ref.replace("refs/heads/", ""),
-              inputs: {
-                triggered_by: "data-pipeline"
-              }
-            });
-
-            console.log("✅ Site rebuild dispatched successfully.");
-
-
+  
   portal-check:
     name: NSFAS Portal Health Check
 
