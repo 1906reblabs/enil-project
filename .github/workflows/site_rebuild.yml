@@ -4,13 +4,10 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "site/**"
 
   workflow_dispatch:
-    inputs:
-      triggered_by:
-        description: "Workflow or process that triggered this deployment"
-        required: false
-        default: "manual"
 
 permissions:
   contents: read
@@ -18,24 +15,23 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: github-pages
+  cancel-in-progress: true
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
 
+    timeout-minutes: 15
+
     steps:
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup GitHub Pages
+      - name: Configure Pages
         uses: actions/configure-pages@v5
-
-      - name: Show trigger information
-        run: |
-          echo "Triggered by: ${{ github.event.inputs.triggered_by || 'push' }}"
-          echo "Event: ${{ github.event_name }}"
 
       - name: Build site
         uses: actions/jekyll-build-pages@v1
@@ -49,7 +45,9 @@ jobs:
           path: ./_site
 
   deploy:
+
     needs: build
+
     runs-on: ubuntu-latest
 
     environment:
@@ -57,6 +55,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: Deploy to GitHub Pages
+
+      - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v5
