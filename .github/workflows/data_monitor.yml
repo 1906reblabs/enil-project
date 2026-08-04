@@ -1,14 +1,8 @@
 name: "ENIL — Daily Data Monitor"
 
-# ─────────────────────────────────────────────────────────────────────────────
-# SINGLE-REPO VERSION
-# Runs the data pipeline daily, commits results back to the same repo,
-# then triggers a site rebuild via the site_rebuild.yml workflow.
-# ─────────────────────────────────────────────────────────────────────────────
-
 on:
   schedule:
-    # 04:00 UTC = 06:00 SAST daily
+    # 04:00 UTC = 06:00 SAST
     - cron: "0 4 * * *"
 
   workflow_dispatch:
@@ -17,8 +11,9 @@ on:
         description: "Source to run (all | dbe | nsfas | aps | labour)"
         required: false
         default: "all"
+
       dry_run:
-        description: "Dry run? (true = validate only, no writes)"
+        description: "Validate only (true/false)"
         required: false
         default: "false"
 
@@ -26,59 +21,81 @@ env:
   PYTHON_VERSION: "3.11"
 
 jobs:
-  # ── Job 1: Extract → Validate → Commit ──────────────────────────────────────
+
   extract:
-    name: "Extract → Validate → Commit"
+    name: Extract → Validate → Commit
     runs-on: ubuntu-24.04
+    timeout-minutes: 45
+
     permissions:
       contents: write
 
+    outputs:
+      changed: ${{ steps.diff.outputs.changed }}
+
     steps:
-      - name: Checkout repo
+
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
-         python-version: ${{ env.PYTHON_VERSION }}
-         cache: pip
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
 
-      - name: Install Python dependencies
+      - name: Install dependencies
         run: |
-            pip install --upgrade pip
-            pip install -r requirements.txt
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
       - name: Install Playwright
         run: |
-         playwright install chromium --with-deps
+          playwright install chromium --with-deps
 
       - name: Run pipeline
-        id: pipeline
         env:
-          GITHUB_ACTIONS: "true"
           PIPELINE_SOURCE: ${{ github.event.inputs.source || 'all' }}
         run: |
           DRY_FLAG=""
-          [ "${{ github.event.inputs.dry_run }}" = "true" ] && DRY_FLAG="--dry-run"
-          python pipeline/pipeline.py --source "$PIPELINE_SOURCE" $DRY_FLAG
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            DRY_FLAG="--dry-run"
+          fi
 
-      - name: Check for data changes
+          python pipeline/pipeline.py \
+            --source "$PIPELINE_SOURCE" \
+            $DRY_FLAG
+
+      - name: Detect changes
         id: diff
         run: |
-          git diff --quiet pipeline/data/ || echo "CHANGED=true" >> "$GITHUB_OUTPUT"
+          if git diff --quiet pipeline/data/ pipeline/runs/; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
 
-      - name: Commit data updates
-        if: steps.diff.outputs.CHANGED == 'true' && github.event.inputs.dry_run != 'true'
+      - name: Commit updates
+        if: steps.diff.outputs.changed == 'true' && github.event.inputs.dry_run != 'true'
         run: |
-          git config user.name  "ENIL Pipeline Bot"
+          git config user.name "ENIL Pipeline Bot"
           git config user.email "pipeline@enil.co.za"
-          git add pipeline/data/ pipeline/runs/ || true
-          git commit -m "🤖 Data update $(date +%Y-%m-%d) — run ${{ github.run_id }}"
-          git push
 
-      - name: Upload pipeline log
+          git add pipeline/data pipeline/runs
+
+          git commit -m "🤖 Daily ENIL update (${{
+            github.run_number
+          }})"
+
+          git push origin HEAD
+
+      - name: Wait for GitHub to index commit
+        if: steps.diff.outputs.changed == 'true'
+        run: sleep 10
+
+      - name: Upload logs
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -86,56 +103,80 @@ jobs:
           path: enil_pipeline.log
           retention-days: 30
 
-  # ── Job 2: Trigger site rebuild ─────────────────────────────────────────────
+
   rebuild-site:
-    name: "Trigger Site Rebuild"
+    name: Trigger Site Rebuild
+
     needs: extract
-    if: success()
+
+    if: needs.extract.outputs.changed == 'true'
+
     runs-on: ubuntu-24.04
+
     permissions:
       actions: write
+      contents: read
 
     steps:
-      - name: Dispatch site_rebuild.yml
+
+      - name: Trigger site rebuild
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
           script: |
             await github.rest.actions.createWorkflowDispatch({
-              owner:       context.repo.owner,
-              repo:        context.repo.repo,
-              workflow_id: 'site_rebuild.yml',
-              ref:         'main',
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: "site_rebuild.yml",
+              ref: context.ref.replace("refs/heads/", ""),
               inputs: {
-                triggered_by: 'data-pipeline'
+                triggered_by: "data-pipeline"
               }
             });
-            console.log('✅ Site rebuild dispatched');
 
-  # ── Job 3: NSFAS portal health check ────────────────────────────────────────
+            console.log("✅ Site rebuild dispatched successfully.");
+
+
   portal-check:
-    name: "NSFAS Portal Health Check"
+    name: NSFAS Portal Health Check
+
     needs: extract
+
     if: always()
+
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Check myNSFAS portal
-        id: nsfas
-        run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-            https://mynsfas.nsfas.org.za --max-time 15 || echo "000")
-          echo "status=$STATUS" >> "$GITHUB_OUTPUT"
-          echo "NSFAS portal HTTP status: $STATUS"
-          [ "$STATUS" = "200" ] && echo "✅ Portal up" || echo "⚠️ Portal may be down"
+    timeout-minutes: 5
 
-      - name: Log portal-down alert
+    steps:
+
+      - name: Check NSFAS portal
+        id: nsfas
+
+        run: |
+          STATUS=$(curl \
+            -s \
+            -o /dev/null \
+            -w "%{http_code}" \
+            --max-time 15 \
+            https://mynsfas.nsfas.org.za || echo "000")
+
+          echo "status=$STATUS" >> "$GITHUB_OUTPUT"
+
+          echo "Portal HTTP status: $STATUS"
+
+      - name: Portal available
+        if: steps.nsfas.outputs.status == '200'
+        run: echo "✅ NSFAS portal is online."
+
+      - name: Portal unavailable
         if: steps.nsfas.outputs.status != '200'
         run: |
-          echo "⚠️ NSFAS portal returned status ${{ steps.nsfas.outputs.status }}"
-          echo "ACTION NEEDED: Update nsfas/index.html crisis banner and send WhatsApp alert"
-          # Webhook integration (add ALERT_WEBHOOK secret to enable):
+          echo "⚠️ NSFAS portal returned ${{ steps.nsfas.outputs.status }}"
+          echo "Consider updating the site banner."
+
+          # Optional webhook
           # curl -X POST "${{ secrets.ALERT_WEBHOOK }}" \
           #   -H "Content-Type: application/json" \
-          #   -d '{"text":"⚠️ NSFAS portal DOWN — status ${{ steps.nsfas.outputs.status }}"}'
-          
+          #   -d '{"text":"NSFAS portal appears to be offline."}'
