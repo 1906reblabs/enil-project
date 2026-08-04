@@ -35,3 +35,5 @@ tika>=2.6.0
 # Dev / testing
 pytest>=7.4.0
 pytest-cov>=4.1.0
+
+Jinja2>=3.1
